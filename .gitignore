@@ -26,3 +26,5 @@ external
 
 # generated from make targets
 *.ok
+
+images/.buildx_builder
