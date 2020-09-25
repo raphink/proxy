@@ -28,5 +28,5 @@ external
 # generated from make targets
 *.ok
 
-# Clang config is platform-specific
+images/.buildx_builder
 clang.bazelrc
