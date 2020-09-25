@@ -29,5 +29,5 @@ external
 *.ok
 
 # Clang config is platform-specific
-images/.buildx_builder
+/.buildx/
 clang.bazelrc
