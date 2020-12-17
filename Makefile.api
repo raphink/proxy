@@ -17,7 +17,7 @@ include Makefile.quiet
 # Depends on Envoy dependencies, Envoy must be built first
 
 PROTOC ?= bazel-out/host/bin/external/com_google_protobuf/protoc
-BIN_PATH ?= bazel-out/host/bin/external/com_github_golang_protobuf/protoc-gen-go/linux_amd64_stripped:bazel-out/host/bin/external/com_envoyproxy_protoc_gen_validate/linux_amd64_stripped
+BIN_PATH ?= bazel-out/host/bin/external/com_github_golang_protobuf/protoc-gen-go/protoc-gen-go_:bazel-out/host/bin/external/com_envoyproxy_protoc_gen_validate/protoc-gen-validate_
 
 ENVOY_API_PROTO_PATH = bazel-proxy/external/envoy/api
 CILIUM_PROTO_PATH = .
