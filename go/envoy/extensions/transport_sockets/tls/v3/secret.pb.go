@@ -9,12 +9,12 @@ package envoy_extensions_transport_sockets_tls_v3
 import (
 	v3 "github.com/cilium/proxy/go/envoy/config/core/v3"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v31 "github.com/cncf/udpa/go/xds/core/v3"
 	proto "github.com/golang/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -87,8 +87,8 @@ type SdsSecretConfig struct {
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Resource locator for SDS. This is mutually exclusive to *name*.
 	// [#not-implemented-hide:]
-	SdsResourceLocator *v1.ResourceLocator `protobuf:"bytes,3,opt,name=sds_resource_locator,json=sdsResourceLocator,proto3" json:"sds_resource_locator,omitempty"`
-	SdsConfig          *v3.ConfigSource    `protobuf:"bytes,2,opt,name=sds_config,json=sdsConfig,proto3" json:"sds_config,omitempty"`
+	SdsResourceLocator *v31.ResourceLocator `protobuf:"bytes,3,opt,name=sds_resource_locator,json=sdsResourceLocator,proto3" json:"sds_resource_locator,omitempty"`
+	SdsConfig          *v3.ConfigSource     `protobuf:"bytes,2,opt,name=sds_config,json=sdsConfig,proto3" json:"sds_config,omitempty"`
 }
 
 func (x *SdsSecretConfig) Reset() {
@@ -130,7 +130,7 @@ func (x *SdsSecretConfig) GetName() string {
 	return ""
 }
 
-func (x *SdsSecretConfig) GetSdsResourceLocator() *v1.ResourceLocator {
+func (x *SdsSecretConfig) GetSdsResourceLocator() *v31.ResourceLocator {
 	if x != nil {
 		return x.SdsResourceLocator
 	}
@@ -373,7 +373,7 @@ var file_envoy_extensions_transport_sockets_tls_v3_secret_proto_goTypes = []inte
 	(*SdsSecretConfig)(nil),              // 1: envoy.extensions.transport_sockets.tls.v3.SdsSecretConfig
 	(*Secret)(nil),                       // 2: envoy.extensions.transport_sockets.tls.v3.Secret
 	(*v3.DataSource)(nil),                // 3: envoy.config.core.v3.DataSource
-	(*v1.ResourceLocator)(nil),           // 4: udpa.core.v1.ResourceLocator
+	(*v31.ResourceLocator)(nil),          // 4: udpa.core.v1.ResourceLocator
 	(*v3.ConfigSource)(nil),              // 5: envoy.config.core.v3.ConfigSource
 	(*TlsCertificate)(nil),               // 6: envoy.extensions.transport_sockets.tls.v3.TlsCertificate
 	(*TlsSessionTicketKeys)(nil),         // 7: envoy.extensions.transport_sockets.tls.v3.TlsSessionTicketKeys

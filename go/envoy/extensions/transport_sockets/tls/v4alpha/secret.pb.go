@@ -9,12 +9,12 @@ package envoy_extensions_transport_sockets_tls_v4alpha
 import (
 	v4alpha "github.com/cilium/proxy/go/envoy/config/core/v4alpha"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v3 "github.com/cncf/udpa/go/xds/core/v3"
 	proto "github.com/golang/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -134,7 +134,7 @@ func (x *SdsSecretConfig) GetName() string {
 	return ""
 }
 
-func (x *SdsSecretConfig) GetSdsResourceLocator() *v1.ResourceLocator {
+func (x *SdsSecretConfig) GetSdsResourceLocator() *v3.ResourceLocator {
 	if x, ok := x.GetNameSpecifier().(*SdsSecretConfig_SdsResourceLocator); ok {
 		return x.SdsResourceLocator
 	}
@@ -162,7 +162,7 @@ type SdsSecretConfig_Name struct {
 type SdsSecretConfig_SdsResourceLocator struct {
 	// Resource locator for SDS. This is mutually exclusive to *name*.
 	// [#not-implemented-hide:]
-	SdsResourceLocator *v1.ResourceLocator `protobuf:"bytes,3,opt,name=sds_resource_locator,json=sdsResourceLocator,proto3,oneof"`
+	SdsResourceLocator *v3.ResourceLocator `protobuf:"bytes,3,opt,name=sds_resource_locator,json=sdsResourceLocator,proto3,oneof"`
 }
 
 func (*SdsSecretConfig_Name) isSdsSecretConfig_NameSpecifier() {}
@@ -403,7 +403,7 @@ var file_envoy_extensions_transport_sockets_tls_v4alpha_secret_proto_goTypes = [
 	(*SdsSecretConfig)(nil),              // 1: envoy.extensions.transport_sockets.tls.v4alpha.SdsSecretConfig
 	(*Secret)(nil),                       // 2: envoy.extensions.transport_sockets.tls.v4alpha.Secret
 	(*v4alpha.DataSource)(nil),           // 3: envoy.config.core.v4alpha.DataSource
-	(*v1.ResourceLocator)(nil),           // 4: udpa.core.v1.ResourceLocator
+	(*v3.ResourceLocator)(nil),           // 4: udpa.core.v1.ResourceLocator
 	(*v4alpha.ConfigSource)(nil),         // 5: envoy.config.core.v4alpha.ConfigSource
 	(*TlsCertificate)(nil),               // 6: envoy.extensions.transport_sockets.tls.v4alpha.TlsCertificate
 	(*TlsSessionTicketKeys)(nil),         // 7: envoy.extensions.transport_sockets.tls.v4alpha.TlsSessionTicketKeys

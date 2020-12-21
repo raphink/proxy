@@ -9,6 +9,7 @@ package envoy_service_discovery_v3
 import (
 	v3 "github.com/cilium/proxy/go/envoy/config/core/v3"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v31 "github.com/cncf/udpa/go/xds/core/v3"
 	proto "github.com/golang/protobuf/proto"
 	any "github.com/golang/protobuf/ptypes/any"
 	status "google.golang.org/genproto/googleapis/rpc/status"
@@ -16,7 +17,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -335,14 +335,14 @@ type DeltaDiscoveryRequest struct {
 	// are ignored and the context parameters are matched with
 	// *context_param_specifier* specific semantics.
 	// [#not-implemented-hide:]
-	UdpaResourcesSubscribe []*v1.ResourceLocator `protobuf:"bytes,8,rep,name=udpa_resources_subscribe,json=udpaResourcesSubscribe,proto3" json:"udpa_resources_subscribe,omitempty"`
+	UdpaResourcesSubscribe []*v31.ResourceLocator `protobuf:"bytes,8,rep,name=udpa_resources_subscribe,json=udpaResourcesSubscribe,proto3" json:"udpa_resources_subscribe,omitempty"`
 	// A list of Resource names to remove from the list of tracked resources.
 	ResourceNamesUnsubscribe []string `protobuf:"bytes,4,rep,name=resource_names_unsubscribe,json=resourceNamesUnsubscribe,proto3" json:"resource_names_unsubscribe,omitempty"`
 	// As with *resource_names_unsubscribe* but used when unsubscribing to resources indicated by a
 	// *udpa.core.v1.ResourceLocator*. This must match a previously subscribed
 	// resource locator provided in *udpa_resources_subscribe*.
 	// [#not-implemented-hide:]
-	UdpaResourcesUnsubscribe []*v1.ResourceLocator `protobuf:"bytes,9,rep,name=udpa_resources_unsubscribe,json=udpaResourcesUnsubscribe,proto3" json:"udpa_resources_unsubscribe,omitempty"`
+	UdpaResourcesUnsubscribe []*v31.ResourceLocator `protobuf:"bytes,9,rep,name=udpa_resources_unsubscribe,json=udpaResourcesUnsubscribe,proto3" json:"udpa_resources_unsubscribe,omitempty"`
 	// Informs the server of the versions of the resources the xDS client knows of, to enable the
 	// client to continue the same logical xDS session even in the face of gRPC stream reconnection.
 	// It will not be populated: [1] in the very first stream of a session, since the client will
@@ -416,7 +416,7 @@ func (x *DeltaDiscoveryRequest) GetResourceNamesSubscribe() []string {
 	return nil
 }
 
-func (x *DeltaDiscoveryRequest) GetUdpaResourcesSubscribe() []*v1.ResourceLocator {
+func (x *DeltaDiscoveryRequest) GetUdpaResourcesSubscribe() []*v31.ResourceLocator {
 	if x != nil {
 		return x.UdpaResourcesSubscribe
 	}
@@ -430,7 +430,7 @@ func (x *DeltaDiscoveryRequest) GetResourceNamesUnsubscribe() []string {
 	return nil
 }
 
-func (x *DeltaDiscoveryRequest) GetUdpaResourcesUnsubscribe() []*v1.ResourceLocator {
+func (x *DeltaDiscoveryRequest) GetUdpaResourcesUnsubscribe() []*v31.ResourceLocator {
 	if x != nil {
 		return x.UdpaResourcesUnsubscribe
 	}
@@ -480,7 +480,7 @@ type DeltaDiscoveryResponse struct {
 	// As with *removed_resources* but used when a removed resource was named in
 	// its *Resource*s with a *udpa.core.v1.ResourceName*.
 	// [#not-implemented-hide:]
-	UdpaRemovedResources []*v1.ResourceName `protobuf:"bytes,7,rep,name=udpa_removed_resources,json=udpaRemovedResources,proto3" json:"udpa_removed_resources,omitempty"`
+	UdpaRemovedResources []*v31.ResourceName `protobuf:"bytes,7,rep,name=udpa_removed_resources,json=udpaRemovedResources,proto3" json:"udpa_removed_resources,omitempty"`
 	// The nonce provides a way for DeltaDiscoveryRequests to uniquely
 	// reference a DeltaDiscoveryResponse when (N)ACKing. The nonce is required.
 	Nonce string `protobuf:"bytes,5,opt,name=nonce,proto3" json:"nonce,omitempty"`
@@ -546,7 +546,7 @@ func (x *DeltaDiscoveryResponse) GetRemovedResources() []string {
 	return nil
 }
 
-func (x *DeltaDiscoveryResponse) GetUdpaRemovedResources() []*v1.ResourceName {
+func (x *DeltaDiscoveryResponse) GetUdpaRemovedResources() []*v31.ResourceName {
 	if x != nil {
 		return x.UdpaRemovedResources
 	}
@@ -569,7 +569,7 @@ type Resource struct {
 	// The resource's name, to distinguish it from others of the same type of resource.
 	Name string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
 	// Used instead of *name* when a resource with a *udpa.core.v1.ResourceName* is delivered.
-	UdpaResourceName *v1.ResourceName `protobuf:"bytes,5,opt,name=udpa_resource_name,json=udpaResourceName,proto3" json:"udpa_resource_name,omitempty"`
+	UdpaResourceName *v31.ResourceName `protobuf:"bytes,5,opt,name=udpa_resource_name,json=udpaResourceName,proto3" json:"udpa_resource_name,omitempty"`
 	// The aliases are a list of other names that this resource can go by.
 	Aliases []string `protobuf:"bytes,4,rep,name=aliases,proto3" json:"aliases,omitempty"`
 	// The resource level version. It allows xDS to track the state of individual
@@ -618,7 +618,7 @@ func (x *Resource) GetName() string {
 	return ""
 }
 
-func (x *Resource) GetUdpaResourceName() *v1.ResourceName {
+func (x *Resource) GetUdpaResourceName() *v31.ResourceName {
 	if x != nil {
 		return x.UdpaResourceName
 	}
@@ -826,8 +826,8 @@ var file_envoy_service_discovery_v3_discovery_proto_goTypes = []interface{}{
 	(*status.Status)(nil),          // 7: google.rpc.Status
 	(*any.Any)(nil),                // 8: google.protobuf.Any
 	(*v3.ControlPlane)(nil),        // 9: envoy.config.core.v3.ControlPlane
-	(*v1.ResourceLocator)(nil),     // 10: udpa.core.v1.ResourceLocator
-	(*v1.ResourceName)(nil),        // 11: udpa.core.v1.ResourceName
+	(*v31.ResourceLocator)(nil),    // 10: udpa.core.v1.ResourceLocator
+	(*v31.ResourceName)(nil),       // 11: udpa.core.v1.ResourceName
 }
 var file_envoy_service_discovery_v3_discovery_proto_depIdxs = []int32{
 	6,  // 0: envoy.service.discovery.v3.DiscoveryRequest.node:type_name -> envoy.config.core.v3.Node

@@ -10,6 +10,7 @@ import (
 	v4alpha1 "github.com/cilium/proxy/go/envoy/config/accesslog/v4alpha"
 	v4alpha "github.com/cilium/proxy/go/envoy/config/core/v4alpha"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v3 "github.com/cncf/udpa/go/xds/core/v3"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	proto "github.com/golang/protobuf/proto"
 	duration "github.com/golang/protobuf/ptypes/duration"
@@ -19,8 +20,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	_ "udpa/annotations"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -92,7 +91,7 @@ type ListenerCollection struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Entries *v1.CollectionEntry `protobuf:"bytes,1,opt,name=entries,proto3" json:"entries,omitempty"`
+	Entries *v3.CollectionEntry `protobuf:"bytes,1,opt,name=entries,proto3" json:"entries,omitempty"`
 }
 
 func (x *ListenerCollection) Reset() {
@@ -127,7 +126,7 @@ func (*ListenerCollection) Descriptor() ([]byte, []int) {
 	return file_envoy_config_listener_v4alpha_listener_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ListenerCollection) GetEntries() *v1.CollectionEntry {
+func (x *ListenerCollection) GetEntries() *v3.CollectionEntry {
 	if x != nil {
 		return x.Entries
 	}
@@ -833,7 +832,7 @@ var file_envoy_config_listener_v4alpha_listener_proto_goTypes = []interface{}{
 	(*Listener_DeprecatedV1)(nil),                         // 3: envoy.config.listener.v4alpha.Listener.DeprecatedV1
 	(*Listener_ConnectionBalanceConfig)(nil),              // 4: envoy.config.listener.v4alpha.Listener.ConnectionBalanceConfig
 	(*Listener_ConnectionBalanceConfig_ExactBalance)(nil), // 5: envoy.config.listener.v4alpha.Listener.ConnectionBalanceConfig.ExactBalance
-	(*v1.CollectionEntry)(nil),                            // 6: udpa.core.v1.CollectionEntry
+	(*v3.CollectionEntry)(nil),                            // 6: udpa.core.v1.CollectionEntry
 	(*v4alpha.Address)(nil),                               // 7: envoy.config.core.v4alpha.Address
 	(*FilterChain)(nil),                                   // 8: envoy.config.listener.v4alpha.FilterChain
 	(*wrappers.UInt32Value)(nil),                          // 9: google.protobuf.UInt32Value

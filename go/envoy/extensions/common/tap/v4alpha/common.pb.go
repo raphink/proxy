@@ -10,13 +10,13 @@ import (
 	v4alpha1 "github.com/cilium/proxy/go/envoy/config/core/v4alpha"
 	v4alpha "github.com/cilium/proxy/go/envoy/config/tap/v4alpha"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v3 "github.com/cncf/udpa/go/xds/core/v3"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	proto "github.com/golang/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -247,7 +247,7 @@ func (x *CommonExtensionConfig_TapDSConfig) GetName() string {
 	return ""
 }
 
-func (x *CommonExtensionConfig_TapDSConfig) GetTapResourceLocator() *v1.ResourceLocator {
+func (x *CommonExtensionConfig_TapDSConfig) GetTapResourceLocator() *v3.ResourceLocator {
 	if x, ok := x.GetNameSpecifier().(*CommonExtensionConfig_TapDSConfig_TapResourceLocator); ok {
 		return x.TapResourceLocator
 	}
@@ -266,7 +266,7 @@ type CommonExtensionConfig_TapDSConfig_Name struct {
 type CommonExtensionConfig_TapDSConfig_TapResourceLocator struct {
 	// Resource locator for TAP. This is mutually exclusive to *name*.
 	// [#not-implemented-hide:]
-	TapResourceLocator *v1.ResourceLocator `protobuf:"bytes,3,opt,name=tap_resource_locator,json=tapResourceLocator,proto3,oneof"`
+	TapResourceLocator *v3.ResourceLocator `protobuf:"bytes,3,opt,name=tap_resource_locator,json=tapResourceLocator,proto3,oneof"`
 }
 
 func (*CommonExtensionConfig_TapDSConfig_Name) isCommonExtensionConfig_TapDSConfig_NameSpecifier() {}
@@ -371,7 +371,7 @@ var file_envoy_extensions_common_tap_v4alpha_common_proto_goTypes = []interface{
 	(*CommonExtensionConfig_TapDSConfig)(nil), // 2: envoy.extensions.common.tap.v4alpha.CommonExtensionConfig.TapDSConfig
 	(*v4alpha.TapConfig)(nil),                 // 3: envoy.config.tap.v4alpha.TapConfig
 	(*v4alpha1.ConfigSource)(nil),             // 4: envoy.config.core.v4alpha.ConfigSource
-	(*v1.ResourceLocator)(nil),                // 5: udpa.core.v1.ResourceLocator
+	(*v3.ResourceLocator)(nil),                // 5: udpa.core.v1.ResourceLocator
 }
 var file_envoy_extensions_common_tap_v4alpha_common_proto_depIdxs = []int32{
 	1, // 0: envoy.extensions.common.tap.v4alpha.CommonExtensionConfig.admin_config:type_name -> envoy.extensions.common.tap.v4alpha.AdminConfig

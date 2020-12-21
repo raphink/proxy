@@ -9,9 +9,10 @@ package envoy_config_cluster_v4alpha
 import (
 	_ "github.com/cilium/proxy/go/envoy/annotations"
 	v4alpha "github.com/cilium/proxy/go/envoy/config/core/v4alpha"
-	v3 "github.com/cilium/proxy/go/envoy/config/endpoint/v3"
-	v31 "github.com/cilium/proxy/go/envoy/type/v3"
+	v31 "github.com/cilium/proxy/go/envoy/config/endpoint/v3"
+	v32 "github.com/cilium/proxy/go/envoy/type/v3"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v3 "github.com/cncf/udpa/go/xds/core/v3"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	proto "github.com/golang/protobuf/proto"
 	any "github.com/golang/protobuf/ptypes/any"
@@ -22,8 +23,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	_ "udpa/annotations"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -480,7 +479,7 @@ type ClusterCollection struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Entries *v1.CollectionEntry `protobuf:"bytes,1,opt,name=entries,proto3" json:"entries,omitempty"`
+	Entries *v3.CollectionEntry `protobuf:"bytes,1,opt,name=entries,proto3" json:"entries,omitempty"`
 }
 
 func (x *ClusterCollection) Reset() {
@@ -515,7 +514,7 @@ func (*ClusterCollection) Descriptor() ([]byte, []int) {
 	return file_envoy_config_cluster_v4alpha_cluster_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ClusterCollection) GetEntries() *v1.CollectionEntry {
+func (x *ClusterCollection) GetEntries() *v3.CollectionEntry {
 	if x != nil {
 		return x.Entries
 	}
@@ -616,7 +615,7 @@ type Cluster struct {
 	//   Setting this allows non-EDS cluster types to contain embedded EDS equivalent
 	//   :ref:`endpoint assignments<envoy_api_msg_config.endpoint.v3.ClusterLoadAssignment>`.
 	//
-	LoadAssignment *v3.ClusterLoadAssignment `protobuf:"bytes,33,opt,name=load_assignment,json=loadAssignment,proto3" json:"load_assignment,omitempty"`
+	LoadAssignment *v31.ClusterLoadAssignment `protobuf:"bytes,33,opt,name=load_assignment,json=loadAssignment,proto3" json:"load_assignment,omitempty"`
 	// Optional :ref:`active health checking <arch_overview_health_checking>`
 	// configuration for the cluster. If no
 	// configuration is specified no health checking will be done and all cluster
@@ -914,7 +913,7 @@ func (x *Cluster) GetLbPolicy() Cluster_LbPolicy {
 	return Cluster_ROUND_ROBIN
 }
 
-func (x *Cluster) GetLoadAssignment() *v3.ClusterLoadAssignment {
+func (x *Cluster) GetLoadAssignment() *v31.ClusterLoadAssignment {
 	if x != nil {
 		return x.LoadAssignment
 	}
@@ -1568,7 +1567,7 @@ func (x *Cluster_EdsClusterConfig) GetServiceName() string {
 	return ""
 }
 
-func (x *Cluster_EdsClusterConfig) GetEdsResourceLocator() *v1.ResourceLocator {
+func (x *Cluster_EdsClusterConfig) GetEdsResourceLocator() *v3.ResourceLocator {
 	if x, ok := x.GetNameSpecifier().(*Cluster_EdsClusterConfig_EdsResourceLocator); ok {
 		return x.EdsResourceLocator
 	}
@@ -1589,7 +1588,7 @@ type Cluster_EdsClusterConfig_ServiceName struct {
 type Cluster_EdsClusterConfig_EdsResourceLocator struct {
 	// Resource locator for EDS. This is mutually exclusive to *service_name*.
 	// [#not-implemented-hide:]
-	EdsResourceLocator *v1.ResourceLocator `protobuf:"bytes,3,opt,name=eds_resource_locator,json=edsResourceLocator,proto3,oneof"`
+	EdsResourceLocator *v3.ResourceLocator `protobuf:"bytes,3,opt,name=eds_resource_locator,json=edsResourceLocator,proto3,oneof"`
 }
 
 func (*Cluster_EdsClusterConfig_ServiceName) isCluster_EdsClusterConfig_NameSpecifier() {}
@@ -1938,7 +1937,7 @@ type Cluster_CommonLbConfig struct {
 	//
 	// .. note::
 	//   The specified percent will be truncated to the nearest 1%.
-	HealthyPanicThreshold *v31.Percent `protobuf:"bytes,1,opt,name=healthy_panic_threshold,json=healthyPanicThreshold,proto3" json:"healthy_panic_threshold,omitempty"`
+	HealthyPanicThreshold *v32.Percent `protobuf:"bytes,1,opt,name=healthy_panic_threshold,json=healthyPanicThreshold,proto3" json:"healthy_panic_threshold,omitempty"`
 	// Types that are assignable to LocalityConfigSpecifier:
 	//	*Cluster_CommonLbConfig_ZoneAwareLbConfig_
 	//	*Cluster_CommonLbConfig_LocalityWeightedLbConfig_
@@ -2017,7 +2016,7 @@ func (*Cluster_CommonLbConfig) Descriptor() ([]byte, []int) {
 	return file_envoy_config_cluster_v4alpha_cluster_proto_rawDescGZIP(), []int{1, 7}
 }
 
-func (x *Cluster_CommonLbConfig) GetHealthyPanicThreshold() *v31.Percent {
+func (x *Cluster_CommonLbConfig) GetHealthyPanicThreshold() *v32.Percent {
 	if x != nil {
 		return x.HealthyPanicThreshold
 	}
@@ -2240,7 +2239,7 @@ type Cluster_CommonLbConfig_ZoneAwareLbConfig struct {
 	// if zone aware routing is configured. If not specified, the default is 100%.
 	// * :ref:`runtime values <config_cluster_manager_cluster_runtime_zone_routing>`.
 	// * :ref:`Zone aware routing support <arch_overview_load_balancing_zone_aware_routing>`.
-	RoutingEnabled *v31.Percent `protobuf:"bytes,1,opt,name=routing_enabled,json=routingEnabled,proto3" json:"routing_enabled,omitempty"`
+	RoutingEnabled *v32.Percent `protobuf:"bytes,1,opt,name=routing_enabled,json=routingEnabled,proto3" json:"routing_enabled,omitempty"`
 	// Configures minimum upstream cluster size required for zone aware routing
 	// If upstream cluster size is less than specified, zone aware routing is not performed
 	// even if zone aware routing is configured. If not specified, the default is 6.
@@ -2286,7 +2285,7 @@ func (*Cluster_CommonLbConfig_ZoneAwareLbConfig) Descriptor() ([]byte, []int) {
 	return file_envoy_config_cluster_v4alpha_cluster_proto_rawDescGZIP(), []int{1, 7, 0}
 }
 
-func (x *Cluster_CommonLbConfig_ZoneAwareLbConfig) GetRoutingEnabled() *v31.Percent {
+func (x *Cluster_CommonLbConfig_ZoneAwareLbConfig) GetRoutingEnabled() *v32.Percent {
 	if x != nil {
 		return x.RoutingEnabled
 	}
@@ -3149,10 +3148,10 @@ var file_envoy_config_cluster_v4alpha_cluster_proto_goTypes = []interface{}{
 	(*Cluster_CommonLbConfig_LocalityWeightedLbConfig)(nil),                     // 24: envoy.config.cluster.v4alpha.Cluster.CommonLbConfig.LocalityWeightedLbConfig
 	(*Cluster_CommonLbConfig_ConsistentHashingLbConfig)(nil),                    // 25: envoy.config.cluster.v4alpha.Cluster.CommonLbConfig.ConsistentHashingLbConfig
 	(*LoadBalancingPolicy_Policy)(nil),                                          // 26: envoy.config.cluster.v4alpha.LoadBalancingPolicy.Policy
-	(*v1.CollectionEntry)(nil),                                                  // 27: udpa.core.v1.CollectionEntry
+	(*v3.CollectionEntry)(nil),                                                  // 27: udpa.core.v1.CollectionEntry
 	(*duration.Duration)(nil),                                                   // 28: google.protobuf.Duration
 	(*wrappers.UInt32Value)(nil),                                                // 29: google.protobuf.UInt32Value
-	(*v3.ClusterLoadAssignment)(nil),                                            // 30: envoy.config.endpoint.v3.ClusterLoadAssignment
+	(*v31.ClusterLoadAssignment)(nil),                                           // 30: envoy.config.endpoint.v3.ClusterLoadAssignment
 	(*v4alpha.HealthCheck)(nil),                                                 // 31: envoy.config.core.v4alpha.HealthCheck
 	(*CircuitBreakers)(nil),                                                     // 32: envoy.config.cluster.v4alpha.CircuitBreakers
 	(*v4alpha.UpstreamHttpProtocolOptions)(nil),                                 // 33: envoy.config.core.v4alpha.UpstreamHttpProtocolOptions
@@ -3170,9 +3169,9 @@ var file_envoy_config_cluster_v4alpha_cluster_proto_goTypes = []interface{}{
 	(*v4alpha.TcpKeepalive)(nil),                                                // 45: envoy.config.core.v4alpha.TcpKeepalive
 	(*_struct.Struct)(nil),                                                      // 46: google.protobuf.Struct
 	(*any.Any)(nil),                                                             // 47: google.protobuf.Any
-	(*v1.ResourceLocator)(nil),                                                  // 48: udpa.core.v1.ResourceLocator
+	(*v3.ResourceLocator)(nil),                                                  // 48: udpa.core.v1.ResourceLocator
 	(*wrappers.UInt64Value)(nil),                                                // 49: google.protobuf.UInt64Value
-	(*v31.Percent)(nil),                                                         // 50: envoy.type.v3.Percent
+	(*v32.Percent)(nil),                                                         // 50: envoy.type.v3.Percent
 }
 var file_envoy_config_cluster_v4alpha_cluster_proto_depIdxs = []int32{
 	27, // 0: envoy.config.cluster.v4alpha.ClusterCollection.entries:type_name -> udpa.core.v1.CollectionEntry

@@ -8,10 +8,11 @@ package envoy_config_cluster_v3
 
 import (
 	_ "github.com/cilium/proxy/go/envoy/annotations"
-	v31 "github.com/cilium/proxy/go/envoy/config/core/v3"
-	v3 "github.com/cilium/proxy/go/envoy/config/endpoint/v3"
-	v32 "github.com/cilium/proxy/go/envoy/type/v3"
+	v32 "github.com/cilium/proxy/go/envoy/config/core/v3"
+	v31 "github.com/cilium/proxy/go/envoy/config/endpoint/v3"
+	v33 "github.com/cilium/proxy/go/envoy/type/v3"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v3 "github.com/cncf/udpa/go/xds/core/v3"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	proto "github.com/golang/protobuf/proto"
 	any "github.com/golang/protobuf/ptypes/any"
@@ -22,8 +23,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	_ "udpa/annotations"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -480,7 +479,7 @@ type ClusterCollection struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Entries *v1.CollectionEntry `protobuf:"bytes,1,opt,name=entries,proto3" json:"entries,omitempty"`
+	Entries *v3.CollectionEntry `protobuf:"bytes,1,opt,name=entries,proto3" json:"entries,omitempty"`
 }
 
 func (x *ClusterCollection) Reset() {
@@ -515,7 +514,7 @@ func (*ClusterCollection) Descriptor() ([]byte, []int) {
 	return file_envoy_config_cluster_v3_cluster_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ClusterCollection) GetEntries() *v1.CollectionEntry {
+func (x *ClusterCollection) GetEntries() *v3.CollectionEntry {
 	if x != nil {
 		return x.Entries
 	}
@@ -616,12 +615,12 @@ type Cluster struct {
 	//   Setting this allows non-EDS cluster types to contain embedded EDS equivalent
 	//   :ref:`endpoint assignments<envoy_api_msg_config.endpoint.v3.ClusterLoadAssignment>`.
 	//
-	LoadAssignment *v3.ClusterLoadAssignment `protobuf:"bytes,33,opt,name=load_assignment,json=loadAssignment,proto3" json:"load_assignment,omitempty"`
+	LoadAssignment *v31.ClusterLoadAssignment `protobuf:"bytes,33,opt,name=load_assignment,json=loadAssignment,proto3" json:"load_assignment,omitempty"`
 	// Optional :ref:`active health checking <arch_overview_health_checking>`
 	// configuration for the cluster. If no
 	// configuration is specified no health checking will be done and all cluster
 	// members will be considered healthy at all times.
-	HealthChecks []*v31.HealthCheck `protobuf:"bytes,8,rep,name=health_checks,json=healthChecks,proto3" json:"health_checks,omitempty"`
+	HealthChecks []*v32.HealthCheck `protobuf:"bytes,8,rep,name=health_checks,json=healthChecks,proto3" json:"health_checks,omitempty"`
 	// Optional maximum requests for a single upstream connection. This parameter
 	// is respected by both the HTTP/1.1 and HTTP/2 connection pool
 	// implementations. If not specified, there is no limit. Setting this
@@ -631,19 +630,19 @@ type Cluster struct {
 	CircuitBreakers *CircuitBreakers `protobuf:"bytes,10,opt,name=circuit_breakers,json=circuitBreakers,proto3" json:"circuit_breakers,omitempty"`
 	// HTTP protocol options that are applied only to upstream HTTP connections.
 	// These options apply to all HTTP versions.
-	UpstreamHttpProtocolOptions *v31.UpstreamHttpProtocolOptions `protobuf:"bytes,46,opt,name=upstream_http_protocol_options,json=upstreamHttpProtocolOptions,proto3" json:"upstream_http_protocol_options,omitempty"`
+	UpstreamHttpProtocolOptions *v32.UpstreamHttpProtocolOptions `protobuf:"bytes,46,opt,name=upstream_http_protocol_options,json=upstreamHttpProtocolOptions,proto3" json:"upstream_http_protocol_options,omitempty"`
 	// Additional options when handling HTTP requests upstream. These options will be applicable to
 	// both HTTP1 and HTTP2 requests.
-	CommonHttpProtocolOptions *v31.HttpProtocolOptions `protobuf:"bytes,29,opt,name=common_http_protocol_options,json=commonHttpProtocolOptions,proto3" json:"common_http_protocol_options,omitempty"`
+	CommonHttpProtocolOptions *v32.HttpProtocolOptions `protobuf:"bytes,29,opt,name=common_http_protocol_options,json=commonHttpProtocolOptions,proto3" json:"common_http_protocol_options,omitempty"`
 	// Additional options when handling HTTP1 requests.
-	HttpProtocolOptions *v31.Http1ProtocolOptions `protobuf:"bytes,13,opt,name=http_protocol_options,json=httpProtocolOptions,proto3" json:"http_protocol_options,omitempty"`
+	HttpProtocolOptions *v32.Http1ProtocolOptions `protobuf:"bytes,13,opt,name=http_protocol_options,json=httpProtocolOptions,proto3" json:"http_protocol_options,omitempty"`
 	// Even if default HTTP2 protocol options are desired, this field must be
 	// set so that Envoy will assume that the upstream supports HTTP/2 when
 	// making new HTTP connection pool connections. Currently, Envoy only
 	// supports prior knowledge for upstream connections. Even if TLS is used
 	// with ALPN, `http2_protocol_options` must be specified. As an aside this allows HTTP/2
 	// connections to happen over plain text.
-	Http2ProtocolOptions *v31.Http2ProtocolOptions `protobuf:"bytes,14,opt,name=http2_protocol_options,json=http2ProtocolOptions,proto3" json:"http2_protocol_options,omitempty"`
+	Http2ProtocolOptions *v32.Http2ProtocolOptions `protobuf:"bytes,14,opt,name=http2_protocol_options,json=http2ProtocolOptions,proto3" json:"http2_protocol_options,omitempty"`
 	// The extension_protocol_options field is used to provide extension-specific protocol options
 	// for upstream connections. The key should match the extension filter name, such as
 	// "envoy.filters.network.thrift_proxy". See the extension's documentation for details on
@@ -686,7 +685,7 @@ type Cluster struct {
 	// :ref:`STRICT_DNS<envoy_api_enum_value_config.cluster.v3.Cluster.DiscoveryType.STRICT_DNS>`
 	// and :ref:`LOGICAL_DNS<envoy_api_enum_value_config.cluster.v3.Cluster.DiscoveryType.LOGICAL_DNS>`
 	// this setting is ignored.
-	DnsResolvers []*v31.Address `protobuf:"bytes,18,rep,name=dns_resolvers,json=dnsResolvers,proto3" json:"dns_resolvers,omitempty"`
+	DnsResolvers []*v32.Address `protobuf:"bytes,18,rep,name=dns_resolvers,json=dnsResolvers,proto3" json:"dns_resolvers,omitempty"`
 	// [#next-major-version: Reconcile DNS options in a single message.]
 	// Always use TCP queries instead of UDP queries for DNS lookups.
 	UseTcpForDnsLookups bool `protobuf:"varint,45,opt,name=use_tcp_for_dns_lookups,json=useTcpForDnsLookups,proto3" json:"use_tcp_for_dns_lookups,omitempty"`
@@ -711,7 +710,7 @@ type Cluster struct {
 	// Optional configuration used to bind newly established upstream connections.
 	// This overrides any bind_config specified in the bootstrap proto.
 	// If the address and port are empty, no bind will be performed.
-	UpstreamBindConfig *v31.BindConfig `protobuf:"bytes,21,opt,name=upstream_bind_config,json=upstreamBindConfig,proto3" json:"upstream_bind_config,omitempty"`
+	UpstreamBindConfig *v32.BindConfig `protobuf:"bytes,21,opt,name=upstream_bind_config,json=upstreamBindConfig,proto3" json:"upstream_bind_config,omitempty"`
 	// Configuration for load balancing subsetting.
 	LbSubsetConfig *Cluster_LbSubsetConfig `protobuf:"bytes,22,opt,name=lb_subset_config,json=lbSubsetConfig,proto3" json:"lb_subset_config,omitempty"`
 	// Optional configuration for the load balancing algorithm selected by
@@ -734,13 +733,13 @@ type Cluster struct {
 	// :ref:`UpstreamTlsContexts <envoy_api_msg_extensions.transport_sockets.tls.v3.UpstreamTlsContext>` in the `typed_config`.
 	// If no transport socket configuration is specified, new connections
 	// will be set up with plaintext.
-	TransportSocket *v31.TransportSocket `protobuf:"bytes,24,opt,name=transport_socket,json=transportSocket,proto3" json:"transport_socket,omitempty"`
+	TransportSocket *v32.TransportSocket `protobuf:"bytes,24,opt,name=transport_socket,json=transportSocket,proto3" json:"transport_socket,omitempty"`
 	// The Metadata field can be used to provide additional information about the
 	// cluster. It can be used for stats, logging, and varying filter behavior.
 	// Fields should use reverse DNS notation to denote which entity within Envoy
 	// will need the information. For instance, if the metadata is intended for
 	// the Router filter, the filter name should be specified as *envoy.filters.http.router*.
-	Metadata *v31.Metadata `protobuf:"bytes,25,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *v32.Metadata `protobuf:"bytes,25,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// Determines how Envoy selects the protocol used to speak to upstream hosts.
 	ProtocolSelection Cluster_ClusterProtocolSelection `protobuf:"varint,26,opt,name=protocol_selection,json=protocolSelection,proto3,enum=envoy.config.cluster.v3.Cluster_ClusterProtocolSelection" json:"protocol_selection,omitempty"`
 	// Optional options for upstream connections.
@@ -785,7 +784,7 @@ type Cluster struct {
 	// [#next-major-version: In the v3 API, we should consider restructuring this somehow,
 	// maybe by allowing LRS to go on the ADS stream, or maybe by moving some of the negotiation
 	// from the LRS stream here.]
-	LrsServer *v31.ConfigSource `protobuf:"bytes,42,opt,name=lrs_server,json=lrsServer,proto3" json:"lrs_server,omitempty"`
+	LrsServer *v32.ConfigSource `protobuf:"bytes,42,opt,name=lrs_server,json=lrsServer,proto3" json:"lrs_server,omitempty"`
 	// If track_timeout_budgets is true, the :ref:`timeout budget histograms
 	// <config_cluster_manager_cluster_stats_timeout_budgets>` will be published for each
 	// request. These show what percentage of a request's per try and global timeout was used. A value
@@ -809,7 +808,7 @@ type Cluster struct {
 	// If users desire custom connection pool or upstream behavior, for example terminating
 	// CONNECT only if a custom filter indicates it is appropriate, the custom factories
 	// can be registered and configured here.
-	UpstreamConfig *v31.TypedExtensionConfig `protobuf:"bytes,48,opt,name=upstream_config,json=upstreamConfig,proto3" json:"upstream_config,omitempty"`
+	UpstreamConfig *v32.TypedExtensionConfig `protobuf:"bytes,48,opt,name=upstream_config,json=upstreamConfig,proto3" json:"upstream_config,omitempty"`
 }
 
 func (x *Cluster) Reset() {
@@ -914,14 +913,14 @@ func (x *Cluster) GetLbPolicy() Cluster_LbPolicy {
 	return Cluster_ROUND_ROBIN
 }
 
-func (x *Cluster) GetLoadAssignment() *v3.ClusterLoadAssignment {
+func (x *Cluster) GetLoadAssignment() *v31.ClusterLoadAssignment {
 	if x != nil {
 		return x.LoadAssignment
 	}
 	return nil
 }
 
-func (x *Cluster) GetHealthChecks() []*v31.HealthCheck {
+func (x *Cluster) GetHealthChecks() []*v32.HealthCheck {
 	if x != nil {
 		return x.HealthChecks
 	}
@@ -942,28 +941,28 @@ func (x *Cluster) GetCircuitBreakers() *CircuitBreakers {
 	return nil
 }
 
-func (x *Cluster) GetUpstreamHttpProtocolOptions() *v31.UpstreamHttpProtocolOptions {
+func (x *Cluster) GetUpstreamHttpProtocolOptions() *v32.UpstreamHttpProtocolOptions {
 	if x != nil {
 		return x.UpstreamHttpProtocolOptions
 	}
 	return nil
 }
 
-func (x *Cluster) GetCommonHttpProtocolOptions() *v31.HttpProtocolOptions {
+func (x *Cluster) GetCommonHttpProtocolOptions() *v32.HttpProtocolOptions {
 	if x != nil {
 		return x.CommonHttpProtocolOptions
 	}
 	return nil
 }
 
-func (x *Cluster) GetHttpProtocolOptions() *v31.Http1ProtocolOptions {
+func (x *Cluster) GetHttpProtocolOptions() *v32.Http1ProtocolOptions {
 	if x != nil {
 		return x.HttpProtocolOptions
 	}
 	return nil
 }
 
-func (x *Cluster) GetHttp2ProtocolOptions() *v31.Http2ProtocolOptions {
+func (x *Cluster) GetHttp2ProtocolOptions() *v32.Http2ProtocolOptions {
 	if x != nil {
 		return x.Http2ProtocolOptions
 	}
@@ -1005,7 +1004,7 @@ func (x *Cluster) GetDnsLookupFamily() Cluster_DnsLookupFamily {
 	return Cluster_AUTO
 }
 
-func (x *Cluster) GetDnsResolvers() []*v31.Address {
+func (x *Cluster) GetDnsResolvers() []*v32.Address {
 	if x != nil {
 		return x.DnsResolvers
 	}
@@ -1033,7 +1032,7 @@ func (x *Cluster) GetCleanupInterval() *duration.Duration {
 	return nil
 }
 
-func (x *Cluster) GetUpstreamBindConfig() *v31.BindConfig {
+func (x *Cluster) GetUpstreamBindConfig() *v32.BindConfig {
 	if x != nil {
 		return x.UpstreamBindConfig
 	}
@@ -1082,14 +1081,14 @@ func (x *Cluster) GetCommonLbConfig() *Cluster_CommonLbConfig {
 	return nil
 }
 
-func (x *Cluster) GetTransportSocket() *v31.TransportSocket {
+func (x *Cluster) GetTransportSocket() *v32.TransportSocket {
 	if x != nil {
 		return x.TransportSocket
 	}
 	return nil
 }
 
-func (x *Cluster) GetMetadata() *v31.Metadata {
+func (x *Cluster) GetMetadata() *v32.Metadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -1138,7 +1137,7 @@ func (x *Cluster) GetLoadBalancingPolicy() *LoadBalancingPolicy {
 	return nil
 }
 
-func (x *Cluster) GetLrsServer() *v31.ConfigSource {
+func (x *Cluster) GetLrsServer() *v32.ConfigSource {
 	if x != nil {
 		return x.LrsServer
 	}
@@ -1152,7 +1151,7 @@ func (x *Cluster) GetTrackTimeoutBudgets() bool {
 	return false
 }
 
-func (x *Cluster) GetUpstreamConfig() *v31.TypedExtensionConfig {
+func (x *Cluster) GetUpstreamConfig() *v32.TypedExtensionConfig {
 	if x != nil {
 		return x.UpstreamConfig
 	}
@@ -1280,7 +1279,7 @@ type UpstreamBindConfig struct {
 	unknownFields protoimpl.UnknownFields
 
 	// The address Envoy should bind to when establishing upstream connections.
-	SourceAddress *v31.Address `protobuf:"bytes,1,opt,name=source_address,json=sourceAddress,proto3" json:"source_address,omitempty"`
+	SourceAddress *v32.Address `protobuf:"bytes,1,opt,name=source_address,json=sourceAddress,proto3" json:"source_address,omitempty"`
 }
 
 func (x *UpstreamBindConfig) Reset() {
@@ -1315,7 +1314,7 @@ func (*UpstreamBindConfig) Descriptor() ([]byte, []int) {
 	return file_envoy_config_cluster_v3_cluster_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *UpstreamBindConfig) GetSourceAddress() *v31.Address {
+func (x *UpstreamBindConfig) GetSourceAddress() *v32.Address {
 	if x != nil {
 		return x.SourceAddress
 	}
@@ -1328,7 +1327,7 @@ type UpstreamConnectionOptions struct {
 	unknownFields protoimpl.UnknownFields
 
 	// If set then set SO_KEEPALIVE on the socket to enable TCP Keepalives.
-	TcpKeepalive *v31.TcpKeepalive `protobuf:"bytes,1,opt,name=tcp_keepalive,json=tcpKeepalive,proto3" json:"tcp_keepalive,omitempty"`
+	TcpKeepalive *v32.TcpKeepalive `protobuf:"bytes,1,opt,name=tcp_keepalive,json=tcpKeepalive,proto3" json:"tcp_keepalive,omitempty"`
 }
 
 func (x *UpstreamConnectionOptions) Reset() {
@@ -1363,7 +1362,7 @@ func (*UpstreamConnectionOptions) Descriptor() ([]byte, []int) {
 	return file_envoy_config_cluster_v3_cluster_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UpstreamConnectionOptions) GetTcpKeepalive() *v31.TcpKeepalive {
+func (x *UpstreamConnectionOptions) GetTcpKeepalive() *v32.TcpKeepalive {
 	if x != nil {
 		return x.TcpKeepalive
 	}
@@ -1386,7 +1385,7 @@ type Cluster_TransportSocketMatch struct {
 	// against the values specified in this field.
 	Match *_struct.Struct `protobuf:"bytes,2,opt,name=match,proto3" json:"match,omitempty"`
 	// The configuration of the transport socket.
-	TransportSocket *v31.TransportSocket `protobuf:"bytes,3,opt,name=transport_socket,json=transportSocket,proto3" json:"transport_socket,omitempty"`
+	TransportSocket *v32.TransportSocket `protobuf:"bytes,3,opt,name=transport_socket,json=transportSocket,proto3" json:"transport_socket,omitempty"`
 }
 
 func (x *Cluster_TransportSocketMatch) Reset() {
@@ -1435,7 +1434,7 @@ func (x *Cluster_TransportSocketMatch) GetMatch() *_struct.Struct {
 	return nil
 }
 
-func (x *Cluster_TransportSocketMatch) GetTransportSocket() *v31.TransportSocket {
+func (x *Cluster_TransportSocketMatch) GetTransportSocket() *v32.TransportSocket {
 	if x != nil {
 		return x.TransportSocket
 	}
@@ -1508,14 +1507,14 @@ type Cluster_EdsClusterConfig struct {
 	unknownFields protoimpl.UnknownFields
 
 	// Configuration for the source of EDS updates for this Cluster.
-	EdsConfig *v31.ConfigSource `protobuf:"bytes,1,opt,name=eds_config,json=edsConfig,proto3" json:"eds_config,omitempty"`
+	EdsConfig *v32.ConfigSource `protobuf:"bytes,1,opt,name=eds_config,json=edsConfig,proto3" json:"eds_config,omitempty"`
 	// Optional alternative to cluster name to present to EDS. This does not
 	// have the same restrictions as cluster name, i.e. it may be arbitrary
 	// length.
 	ServiceName string `protobuf:"bytes,2,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
 	// Resource locator for EDS. This is mutually exclusive to *service_name*.
 	// [#not-implemented-hide:]
-	EdsResourceLocator *v1.ResourceLocator `protobuf:"bytes,3,opt,name=eds_resource_locator,json=edsResourceLocator,proto3" json:"eds_resource_locator,omitempty"`
+	EdsResourceLocator *v3.ResourceLocator `protobuf:"bytes,3,opt,name=eds_resource_locator,json=edsResourceLocator,proto3" json:"eds_resource_locator,omitempty"`
 }
 
 func (x *Cluster_EdsClusterConfig) Reset() {
@@ -1550,7 +1549,7 @@ func (*Cluster_EdsClusterConfig) Descriptor() ([]byte, []int) {
 	return file_envoy_config_cluster_v3_cluster_proto_rawDescGZIP(), []int{1, 2}
 }
 
-func (x *Cluster_EdsClusterConfig) GetEdsConfig() *v31.ConfigSource {
+func (x *Cluster_EdsClusterConfig) GetEdsConfig() *v32.ConfigSource {
 	if x != nil {
 		return x.EdsConfig
 	}
@@ -1564,7 +1563,7 @@ func (x *Cluster_EdsClusterConfig) GetServiceName() string {
 	return ""
 }
 
-func (x *Cluster_EdsClusterConfig) GetEdsResourceLocator() *v1.ResourceLocator {
+func (x *Cluster_EdsClusterConfig) GetEdsResourceLocator() *v3.ResourceLocator {
 	if x != nil {
 		return x.EdsResourceLocator
 	}
@@ -1913,7 +1912,7 @@ type Cluster_CommonLbConfig struct {
 	//
 	// .. note::
 	//   The specified percent will be truncated to the nearest 1%.
-	HealthyPanicThreshold *v32.Percent `protobuf:"bytes,1,opt,name=healthy_panic_threshold,json=healthyPanicThreshold,proto3" json:"healthy_panic_threshold,omitempty"`
+	HealthyPanicThreshold *v33.Percent `protobuf:"bytes,1,opt,name=healthy_panic_threshold,json=healthyPanicThreshold,proto3" json:"healthy_panic_threshold,omitempty"`
 	// Types that are assignable to LocalityConfigSpecifier:
 	//	*Cluster_CommonLbConfig_ZoneAwareLbConfig_
 	//	*Cluster_CommonLbConfig_LocalityWeightedLbConfig_
@@ -1992,7 +1991,7 @@ func (*Cluster_CommonLbConfig) Descriptor() ([]byte, []int) {
 	return file_envoy_config_cluster_v3_cluster_proto_rawDescGZIP(), []int{1, 7}
 }
 
-func (x *Cluster_CommonLbConfig) GetHealthyPanicThreshold() *v32.Percent {
+func (x *Cluster_CommonLbConfig) GetHealthyPanicThreshold() *v33.Percent {
 	if x != nil {
 		return x.HealthyPanicThreshold
 	}
@@ -2215,7 +2214,7 @@ type Cluster_CommonLbConfig_ZoneAwareLbConfig struct {
 	// if zone aware routing is configured. If not specified, the default is 100%.
 	// * :ref:`runtime values <config_cluster_manager_cluster_runtime_zone_routing>`.
 	// * :ref:`Zone aware routing support <arch_overview_load_balancing_zone_aware_routing>`.
-	RoutingEnabled *v32.Percent `protobuf:"bytes,1,opt,name=routing_enabled,json=routingEnabled,proto3" json:"routing_enabled,omitempty"`
+	RoutingEnabled *v33.Percent `protobuf:"bytes,1,opt,name=routing_enabled,json=routingEnabled,proto3" json:"routing_enabled,omitempty"`
 	// Configures minimum upstream cluster size required for zone aware routing
 	// If upstream cluster size is less than specified, zone aware routing is not performed
 	// even if zone aware routing is configured. If not specified, the default is 6.
@@ -2261,7 +2260,7 @@ func (*Cluster_CommonLbConfig_ZoneAwareLbConfig) Descriptor() ([]byte, []int) {
 	return file_envoy_config_cluster_v3_cluster_proto_rawDescGZIP(), []int{1, 7, 0}
 }
 
-func (x *Cluster_CommonLbConfig_ZoneAwareLbConfig) GetRoutingEnabled() *v32.Percent {
+func (x *Cluster_CommonLbConfig_ZoneAwareLbConfig) GetRoutingEnabled() *v33.Percent {
 	if x != nil {
 		return x.RoutingEnabled
 	}
@@ -3095,30 +3094,30 @@ var file_envoy_config_cluster_v3_cluster_proto_goTypes = []interface{}{
 	(*Cluster_CommonLbConfig_LocalityWeightedLbConfig)(nil),                     // 24: envoy.config.cluster.v3.Cluster.CommonLbConfig.LocalityWeightedLbConfig
 	(*Cluster_CommonLbConfig_ConsistentHashingLbConfig)(nil),                    // 25: envoy.config.cluster.v3.Cluster.CommonLbConfig.ConsistentHashingLbConfig
 	(*LoadBalancingPolicy_Policy)(nil),                                          // 26: envoy.config.cluster.v3.LoadBalancingPolicy.Policy
-	(*v1.CollectionEntry)(nil),                                                  // 27: udpa.core.v1.CollectionEntry
+	(*v3.CollectionEntry)(nil),                                                  // 27: udpa.core.v1.CollectionEntry
 	(*duration.Duration)(nil),                                                   // 28: google.protobuf.Duration
 	(*wrappers.UInt32Value)(nil),                                                // 29: google.protobuf.UInt32Value
-	(*v3.ClusterLoadAssignment)(nil),                                            // 30: envoy.config.endpoint.v3.ClusterLoadAssignment
-	(*v31.HealthCheck)(nil),                                                     // 31: envoy.config.core.v3.HealthCheck
+	(*v31.ClusterLoadAssignment)(nil),                                           // 30: envoy.config.endpoint.v3.ClusterLoadAssignment
+	(*v32.HealthCheck)(nil),                                                     // 31: envoy.config.core.v3.HealthCheck
 	(*CircuitBreakers)(nil),                                                     // 32: envoy.config.cluster.v3.CircuitBreakers
-	(*v31.UpstreamHttpProtocolOptions)(nil),                                     // 33: envoy.config.core.v3.UpstreamHttpProtocolOptions
-	(*v31.HttpProtocolOptions)(nil),                                             // 34: envoy.config.core.v3.HttpProtocolOptions
-	(*v31.Http1ProtocolOptions)(nil),                                            // 35: envoy.config.core.v3.Http1ProtocolOptions
-	(*v31.Http2ProtocolOptions)(nil),                                            // 36: envoy.config.core.v3.Http2ProtocolOptions
-	(*v31.Address)(nil),                                                         // 37: envoy.config.core.v3.Address
+	(*v32.UpstreamHttpProtocolOptions)(nil),                                     // 33: envoy.config.core.v3.UpstreamHttpProtocolOptions
+	(*v32.HttpProtocolOptions)(nil),                                             // 34: envoy.config.core.v3.HttpProtocolOptions
+	(*v32.Http1ProtocolOptions)(nil),                                            // 35: envoy.config.core.v3.Http1ProtocolOptions
+	(*v32.Http2ProtocolOptions)(nil),                                            // 36: envoy.config.core.v3.Http2ProtocolOptions
+	(*v32.Address)(nil),                                                         // 37: envoy.config.core.v3.Address
 	(*OutlierDetection)(nil),                                                    // 38: envoy.config.cluster.v3.OutlierDetection
-	(*v31.BindConfig)(nil),                                                      // 39: envoy.config.core.v3.BindConfig
-	(*v31.TransportSocket)(nil),                                                 // 40: envoy.config.core.v3.TransportSocket
-	(*v31.Metadata)(nil),                                                        // 41: envoy.config.core.v3.Metadata
+	(*v32.BindConfig)(nil),                                                      // 39: envoy.config.core.v3.BindConfig
+	(*v32.TransportSocket)(nil),                                                 // 40: envoy.config.core.v3.TransportSocket
+	(*v32.Metadata)(nil),                                                        // 41: envoy.config.core.v3.Metadata
 	(*Filter)(nil),                                                              // 42: envoy.config.cluster.v3.Filter
-	(*v31.ConfigSource)(nil),                                                    // 43: envoy.config.core.v3.ConfigSource
-	(*v31.TypedExtensionConfig)(nil),                                            // 44: envoy.config.core.v3.TypedExtensionConfig
-	(*v31.TcpKeepalive)(nil),                                                    // 45: envoy.config.core.v3.TcpKeepalive
+	(*v32.ConfigSource)(nil),                                                    // 43: envoy.config.core.v3.ConfigSource
+	(*v32.TypedExtensionConfig)(nil),                                            // 44: envoy.config.core.v3.TypedExtensionConfig
+	(*v32.TcpKeepalive)(nil),                                                    // 45: envoy.config.core.v3.TcpKeepalive
 	(*_struct.Struct)(nil),                                                      // 46: google.protobuf.Struct
 	(*any.Any)(nil),                                                             // 47: google.protobuf.Any
-	(*v1.ResourceLocator)(nil),                                                  // 48: udpa.core.v1.ResourceLocator
+	(*v3.ResourceLocator)(nil),                                                  // 48: udpa.core.v1.ResourceLocator
 	(*wrappers.UInt64Value)(nil),                                                // 49: google.protobuf.UInt64Value
-	(*v32.Percent)(nil),                                                         // 50: envoy.type.v3.Percent
+	(*v33.Percent)(nil),                                                         // 50: envoy.type.v3.Percent
 }
 var file_envoy_config_cluster_v3_cluster_proto_depIdxs = []int32{
 	27, // 0: envoy.config.cluster.v3.ClusterCollection.entries:type_name -> udpa.core.v1.CollectionEntry

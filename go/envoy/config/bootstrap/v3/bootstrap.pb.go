@@ -16,6 +16,7 @@ import (
 	v32 "github.com/cilium/proxy/go/envoy/config/trace/v3"
 	v36 "github.com/cilium/proxy/go/envoy/extensions/transport_sockets/tls/v3"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v37 "github.com/cncf/udpa/go/xds/core/v3"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	proto "github.com/golang/protobuf/proto"
 	duration "github.com/golang/protobuf/ptypes/duration"
@@ -25,8 +26,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	_ "udpa/annotations"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -927,14 +926,14 @@ type Bootstrap_DynamicResources struct {
 	LdsConfig *v3.ConfigSource `protobuf:"bytes,1,opt,name=lds_config,json=ldsConfig,proto3" json:"lds_config,omitempty"`
 	// Resource locator for listener collection.
 	// [#not-implemented-hide:]
-	LdsResourcesLocator *v1.ResourceLocator `protobuf:"bytes,5,opt,name=lds_resources_locator,json=ldsResourcesLocator,proto3" json:"lds_resources_locator,omitempty"`
+	LdsResourcesLocator *v37.ResourceLocator `protobuf:"bytes,5,opt,name=lds_resources_locator,json=ldsResourcesLocator,proto3" json:"lds_resources_locator,omitempty"`
 	// All post-bootstrap :ref:`Cluster <envoy_api_msg_config.cluster.v3.Cluster>` definitions are
 	// provided by a single :ref:`CDS <arch_overview_dynamic_config_cds>`
 	// configuration source.
 	CdsConfig *v3.ConfigSource `protobuf:"bytes,2,opt,name=cds_config,json=cdsConfig,proto3" json:"cds_config,omitempty"`
 	// Resource locator for cluster collection.
 	// [#not-implemented-hide:]
-	CdsResourcesLocator *v1.ResourceLocator `protobuf:"bytes,6,opt,name=cds_resources_locator,json=cdsResourcesLocator,proto3" json:"cds_resources_locator,omitempty"`
+	CdsResourcesLocator *v37.ResourceLocator `protobuf:"bytes,6,opt,name=cds_resources_locator,json=cdsResourcesLocator,proto3" json:"cds_resources_locator,omitempty"`
 	// A single :ref:`ADS <config_overview_ads>` source may be optionally
 	// specified. This must have :ref:`api_type
 	// <envoy_api_field_config.core.v3.ApiConfigSource.api_type>` :ref:`GRPC
@@ -984,7 +983,7 @@ func (x *Bootstrap_DynamicResources) GetLdsConfig() *v3.ConfigSource {
 	return nil
 }
 
-func (x *Bootstrap_DynamicResources) GetLdsResourcesLocator() *v1.ResourceLocator {
+func (x *Bootstrap_DynamicResources) GetLdsResourcesLocator() *v37.ResourceLocator {
 	if x != nil {
 		return x.LdsResourcesLocator
 	}
@@ -998,7 +997,7 @@ func (x *Bootstrap_DynamicResources) GetCdsConfig() *v3.ConfigSource {
 	return nil
 }
 
-func (x *Bootstrap_DynamicResources) GetCdsResourcesLocator() *v1.ResourceLocator {
+func (x *Bootstrap_DynamicResources) GetCdsResourcesLocator() *v37.ResourceLocator {
 	if x != nil {
 		return x.CdsResourcesLocator
 	}
@@ -1196,7 +1195,7 @@ type RuntimeLayer_RtdsLayer struct {
 	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	// Resource locator for RTDS layer. This is mutually exclusive to *name*.
 	// [#not-implemented-hide:]
-	RtdsResourceLocator *v1.ResourceLocator `protobuf:"bytes,3,opt,name=rtds_resource_locator,json=rtdsResourceLocator,proto3" json:"rtds_resource_locator,omitempty"`
+	RtdsResourceLocator *v37.ResourceLocator `protobuf:"bytes,3,opt,name=rtds_resource_locator,json=rtdsResourceLocator,proto3" json:"rtds_resource_locator,omitempty"`
 	// RTDS configuration source.
 	RtdsConfig *v3.ConfigSource `protobuf:"bytes,2,opt,name=rtds_config,json=rtdsConfig,proto3" json:"rtds_config,omitempty"`
 }
@@ -1240,7 +1239,7 @@ func (x *RuntimeLayer_RtdsLayer) GetName() string {
 	return ""
 }
 
-func (x *RuntimeLayer_RtdsLayer) GetRtdsResourceLocator() *v1.ResourceLocator {
+func (x *RuntimeLayer_RtdsLayer) GetRtdsResourceLocator() *v37.ResourceLocator {
 	if x != nil {
 		return x.RtdsResourceLocator
 	}
@@ -1669,7 +1668,7 @@ var file_envoy_config_bootstrap_v3_bootstrap_proto_goTypes = []interface{}{
 	(*v34.Listener)(nil),                    // 27: envoy.config.listener.v3.Listener
 	(*v35.Cluster)(nil),                     // 28: envoy.config.cluster.v3.Cluster
 	(*v36.Secret)(nil),                      // 29: envoy.extensions.transport_sockets.tls.v3.Secret
-	(*v1.ResourceLocator)(nil),              // 30: udpa.core.v1.ResourceLocator
+	(*v37.ResourceLocator)(nil),             // 30: udpa.core.v1.ResourceLocator
 	(*v3.EventServiceConfig)(nil),           // 31: envoy.config.core.v3.EventServiceConfig
 }
 var file_envoy_config_bootstrap_v3_bootstrap_proto_depIdxs = []int32{

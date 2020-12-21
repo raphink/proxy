@@ -9,6 +9,7 @@ package envoy_config_core_v4alpha
 import (
 	_ "github.com/cilium/proxy/go/envoy/annotations"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v3 "github.com/cncf/udpa/go/xds/core/v3"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	proto "github.com/golang/protobuf/proto"
 	duration "github.com/golang/protobuf/ptypes/duration"
@@ -17,7 +18,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -458,7 +458,7 @@ type ConfigSource struct {
 	// to configuration fetch. This field provides the association between
 	// authority name and configuration source.
 	// [#not-implemented-hide:]
-	Authorities []*v1.Authority `protobuf:"bytes,7,rep,name=authorities,proto3" json:"authorities,omitempty"`
+	Authorities []*v3.Authority `protobuf:"bytes,7,rep,name=authorities,proto3" json:"authorities,omitempty"`
 	// Types that are assignable to ConfigSourceSpecifier:
 	//	*ConfigSource_Path
 	//	*ConfigSource_ApiConfigSource
@@ -511,7 +511,7 @@ func (*ConfigSource) Descriptor() ([]byte, []int) {
 	return file_envoy_config_core_v4alpha_config_source_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *ConfigSource) GetAuthorities() []*v1.Authority {
+func (x *ConfigSource) GetAuthorities() []*v3.Authority {
 	if x != nil {
 		return x.Authorities
 	}
@@ -798,7 +798,7 @@ var file_envoy_config_core_v4alpha_config_source_proto_goTypes = []interface{}{
 	(*duration.Duration)(nil),      // 8: google.protobuf.Duration
 	(*wrappers.UInt32Value)(nil),   // 9: google.protobuf.UInt32Value
 	(*wrappers.DoubleValue)(nil),   // 10: google.protobuf.DoubleValue
-	(*v1.Authority)(nil),           // 11: udpa.core.v1.Authority
+	(*v3.Authority)(nil),           // 11: udpa.core.v1.Authority
 }
 var file_envoy_config_core_v4alpha_config_source_proto_depIdxs = []int32{
 	1,  // 0: envoy.config.core.v4alpha.ApiConfigSource.api_type:type_name -> envoy.config.core.v4alpha.ApiConfigSource.ApiType

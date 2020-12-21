@@ -7,9 +7,10 @@
 package envoy_config_listener_v3
 
 import (
-	v31 "github.com/cilium/proxy/go/envoy/config/accesslog/v3"
-	v3 "github.com/cilium/proxy/go/envoy/config/core/v3"
+	v32 "github.com/cilium/proxy/go/envoy/config/accesslog/v3"
+	v31 "github.com/cilium/proxy/go/envoy/config/core/v3"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v3 "github.com/cncf/udpa/go/xds/core/v3"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	proto "github.com/golang/protobuf/proto"
 	duration "github.com/golang/protobuf/ptypes/duration"
@@ -19,8 +20,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	_ "udpa/annotations"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -92,7 +91,7 @@ type ListenerCollection struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Entries *v1.CollectionEntry `protobuf:"bytes,1,opt,name=entries,proto3" json:"entries,omitempty"`
+	Entries *v3.CollectionEntry `protobuf:"bytes,1,opt,name=entries,proto3" json:"entries,omitempty"`
 }
 
 func (x *ListenerCollection) Reset() {
@@ -127,7 +126,7 @@ func (*ListenerCollection) Descriptor() ([]byte, []int) {
 	return file_envoy_config_listener_v3_listener_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ListenerCollection) GetEntries() *v1.CollectionEntry {
+func (x *ListenerCollection) GetEntries() *v3.CollectionEntry {
 	if x != nil {
 		return x.Entries
 	}
@@ -147,7 +146,7 @@ type Listener struct {
 	// The address that the listener should listen on. In general, the address must be unique, though
 	// that is governed by the bind rules of the OS. E.g., multiple listeners can listen on port 0 on
 	// Linux as the actual port will be allocated by the OS.
-	Address *v3.Address `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
+	Address *v31.Address `protobuf:"bytes,2,opt,name=address,proto3" json:"address,omitempty"`
 	// A list of filter chains to consider for this listener. The
 	// :ref:`FilterChain <envoy_api_msg_config.listener.v3.FilterChain>` with the most specific
 	// :ref:`FilterChainMatch <envoy_api_msg_config.listener.v3.FilterChainMatch>` criteria is used on a
@@ -160,7 +159,7 @@ type Listener struct {
 	// If unspecified, an implementation defined default is applied (1MiB).
 	PerConnectionBufferLimitBytes *wrappers.UInt32Value `protobuf:"bytes,5,opt,name=per_connection_buffer_limit_bytes,json=perConnectionBufferLimitBytes,proto3" json:"per_connection_buffer_limit_bytes,omitempty"`
 	// Listener metadata.
-	Metadata *v3.Metadata `protobuf:"bytes,6,opt,name=metadata,proto3" json:"metadata,omitempty"`
+	Metadata *v31.Metadata `protobuf:"bytes,6,opt,name=metadata,proto3" json:"metadata,omitempty"`
 	// [#not-implemented-hide:]
 	DeprecatedV1 *Listener_DeprecatedV1 `protobuf:"bytes,7,opt,name=deprecated_v1,json=deprecatedV1,proto3" json:"deprecated_v1,omitempty"`
 	// The type of draining to perform at a listener-wide level.
@@ -212,7 +211,7 @@ type Listener struct {
 	Freebind *wrappers.BoolValue `protobuf:"bytes,11,opt,name=freebind,proto3" json:"freebind,omitempty"`
 	// Additional socket options that may not be present in Envoy source code or
 	// precompiled binaries.
-	SocketOptions []*v3.SocketOption `protobuf:"bytes,13,rep,name=socket_options,json=socketOptions,proto3" json:"socket_options,omitempty"`
+	SocketOptions []*v31.SocketOption `protobuf:"bytes,13,rep,name=socket_options,json=socketOptions,proto3" json:"socket_options,omitempty"`
 	// Whether the listener should accept TCP Fast Open (TFO) connections.
 	// When this flag is set to a value greater than 0, the option TCP_FASTOPEN is enabled on
 	// the socket, with a queue length of the specified size
@@ -229,7 +228,7 @@ type Listener struct {
 	// To set the queue length on macOS, set the net.inet.tcp.fastopen_backlog kernel parameter.
 	TcpFastOpenQueueLength *wrappers.UInt32Value `protobuf:"bytes,12,opt,name=tcp_fast_open_queue_length,json=tcpFastOpenQueueLength,proto3" json:"tcp_fast_open_queue_length,omitempty"`
 	// Specifies the intended direction of the traffic relative to the local Envoy.
-	TrafficDirection v3.TrafficDirection `protobuf:"varint,16,opt,name=traffic_direction,json=trafficDirection,proto3,enum=envoy.config.core.v3.TrafficDirection" json:"traffic_direction,omitempty"`
+	TrafficDirection v31.TrafficDirection `protobuf:"varint,16,opt,name=traffic_direction,json=trafficDirection,proto3,enum=envoy.config.core.v3.TrafficDirection" json:"traffic_direction,omitempty"`
 	// If the protocol in the listener socket address in :ref:`protocol
 	// <envoy_api_field_config.core.v3.SocketAddress.protocol>` is :ref:`UDP
 	// <envoy_api_enum_value_config.core.v3.SocketAddress.Protocol.UDP>`, this field specifies the actual udp
@@ -271,7 +270,7 @@ type Listener struct {
 	ReusePort bool `protobuf:"varint,21,opt,name=reuse_port,json=reusePort,proto3" json:"reuse_port,omitempty"`
 	// Configuration for :ref:`access logs <arch_overview_access_logs>`
 	// emitted by this listener.
-	AccessLog []*v31.AccessLog `protobuf:"bytes,22,rep,name=access_log,json=accessLog,proto3" json:"access_log,omitempty"`
+	AccessLog []*v32.AccessLog `protobuf:"bytes,22,rep,name=access_log,json=accessLog,proto3" json:"access_log,omitempty"`
 }
 
 func (x *Listener) Reset() {
@@ -313,7 +312,7 @@ func (x *Listener) GetName() string {
 	return ""
 }
 
-func (x *Listener) GetAddress() *v3.Address {
+func (x *Listener) GetAddress() *v31.Address {
 	if x != nil {
 		return x.Address
 	}
@@ -334,7 +333,7 @@ func (x *Listener) GetPerConnectionBufferLimitBytes() *wrappers.UInt32Value {
 	return nil
 }
 
-func (x *Listener) GetMetadata() *v3.Metadata {
+func (x *Listener) GetMetadata() *v31.Metadata {
 	if x != nil {
 		return x.Metadata
 	}
@@ -390,7 +389,7 @@ func (x *Listener) GetFreebind() *wrappers.BoolValue {
 	return nil
 }
 
-func (x *Listener) GetSocketOptions() []*v3.SocketOption {
+func (x *Listener) GetSocketOptions() []*v31.SocketOption {
 	if x != nil {
 		return x.SocketOptions
 	}
@@ -404,11 +403,11 @@ func (x *Listener) GetTcpFastOpenQueueLength() *wrappers.UInt32Value {
 	return nil
 }
 
-func (x *Listener) GetTrafficDirection() v3.TrafficDirection {
+func (x *Listener) GetTrafficDirection() v31.TrafficDirection {
 	if x != nil {
 		return x.TrafficDirection
 	}
-	return v3.TrafficDirection_UNSPECIFIED
+	return v31.TrafficDirection_UNSPECIFIED
 }
 
 func (x *Listener) GetUdpListenerConfig() *UdpListenerConfig {
@@ -439,7 +438,7 @@ func (x *Listener) GetReusePort() bool {
 	return false
 }
 
-func (x *Listener) GetAccessLog() []*v31.AccessLog {
+func (x *Listener) GetAccessLog() []*v32.AccessLog {
 	if x != nil {
 		return x.AccessLog
 	}
@@ -820,19 +819,19 @@ var file_envoy_config_listener_v3_listener_proto_goTypes = []interface{}{
 	(*Listener_DeprecatedV1)(nil),                         // 3: envoy.config.listener.v3.Listener.DeprecatedV1
 	(*Listener_ConnectionBalanceConfig)(nil),              // 4: envoy.config.listener.v3.Listener.ConnectionBalanceConfig
 	(*Listener_ConnectionBalanceConfig_ExactBalance)(nil), // 5: envoy.config.listener.v3.Listener.ConnectionBalanceConfig.ExactBalance
-	(*v1.CollectionEntry)(nil),                            // 6: udpa.core.v1.CollectionEntry
-	(*v3.Address)(nil),                                    // 7: envoy.config.core.v3.Address
+	(*v3.CollectionEntry)(nil),                            // 6: udpa.core.v1.CollectionEntry
+	(*v31.Address)(nil),                                   // 7: envoy.config.core.v3.Address
 	(*FilterChain)(nil),                                   // 8: envoy.config.listener.v3.FilterChain
 	(*wrappers.UInt32Value)(nil),                          // 9: google.protobuf.UInt32Value
-	(*v3.Metadata)(nil),                                   // 10: envoy.config.core.v3.Metadata
+	(*v31.Metadata)(nil),                                  // 10: envoy.config.core.v3.Metadata
 	(*ListenerFilter)(nil),                                // 11: envoy.config.listener.v3.ListenerFilter
 	(*duration.Duration)(nil),                             // 12: google.protobuf.Duration
 	(*wrappers.BoolValue)(nil),                            // 13: google.protobuf.BoolValue
-	(*v3.SocketOption)(nil),                               // 14: envoy.config.core.v3.SocketOption
-	(v3.TrafficDirection)(0),                              // 15: envoy.config.core.v3.TrafficDirection
+	(*v31.SocketOption)(nil),                              // 14: envoy.config.core.v3.SocketOption
+	(v31.TrafficDirection)(0),                             // 15: envoy.config.core.v3.TrafficDirection
 	(*UdpListenerConfig)(nil),                             // 16: envoy.config.listener.v3.UdpListenerConfig
 	(*ApiListener)(nil),                                   // 17: envoy.config.listener.v3.ApiListener
-	(*v31.AccessLog)(nil),                                 // 18: envoy.config.accesslog.v3.AccessLog
+	(*v32.AccessLog)(nil),                                 // 18: envoy.config.accesslog.v3.AccessLog
 }
 var file_envoy_config_listener_v3_listener_proto_depIdxs = []int32{
 	6,  // 0: envoy.config.listener.v3.ListenerCollection.entries:type_name -> udpa.core.v1.CollectionEntry

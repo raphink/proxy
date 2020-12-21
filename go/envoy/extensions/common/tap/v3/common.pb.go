@@ -10,13 +10,13 @@ import (
 	v31 "github.com/cilium/proxy/go/envoy/config/core/v3"
 	v3 "github.com/cilium/proxy/go/envoy/config/tap/v3"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v32 "github.com/cncf/udpa/go/xds/core/v3"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	proto "github.com/golang/protobuf/proto"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -192,7 +192,7 @@ type CommonExtensionConfig_TapDSConfig struct {
 	Name string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	// Resource locator for TAP. This is mutually exclusive to *name*.
 	// [#not-implemented-hide:]
-	TapResourceLocator *v1.ResourceLocator `protobuf:"bytes,3,opt,name=tap_resource_locator,json=tapResourceLocator,proto3" json:"tap_resource_locator,omitempty"`
+	TapResourceLocator *v32.ResourceLocator `protobuf:"bytes,3,opt,name=tap_resource_locator,json=tapResourceLocator,proto3" json:"tap_resource_locator,omitempty"`
 }
 
 func (x *CommonExtensionConfig_TapDSConfig) Reset() {
@@ -241,7 +241,7 @@ func (x *CommonExtensionConfig_TapDSConfig) GetName() string {
 	return ""
 }
 
-func (x *CommonExtensionConfig_TapDSConfig) GetTapResourceLocator() *v1.ResourceLocator {
+func (x *CommonExtensionConfig_TapDSConfig) GetTapResourceLocator() *v32.ResourceLocator {
 	if x != nil {
 		return x.TapResourceLocator
 	}
@@ -346,7 +346,7 @@ var file_envoy_extensions_common_tap_v3_common_proto_goTypes = []interface{}{
 	(*CommonExtensionConfig_TapDSConfig)(nil), // 2: envoy.extensions.common.tap.v3.CommonExtensionConfig.TapDSConfig
 	(*v3.TapConfig)(nil),                      // 3: envoy.config.tap.v3.TapConfig
 	(*v31.ConfigSource)(nil),                  // 4: envoy.config.core.v3.ConfigSource
-	(*v1.ResourceLocator)(nil),                // 5: udpa.core.v1.ResourceLocator
+	(*v32.ResourceLocator)(nil),               // 5: udpa.core.v1.ResourceLocator
 }
 var file_envoy_extensions_common_tap_v3_common_proto_depIdxs = []int32{
 	1, // 0: envoy.extensions.common.tap.v3.CommonExtensionConfig.admin_config:type_name -> envoy.extensions.common.tap.v3.AdminConfig

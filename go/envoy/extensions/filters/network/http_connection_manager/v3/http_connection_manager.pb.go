@@ -11,10 +11,11 @@ import (
 	v31 "github.com/cilium/proxy/go/envoy/config/accesslog/v3"
 	v3 "github.com/cilium/proxy/go/envoy/config/core/v3"
 	v32 "github.com/cilium/proxy/go/envoy/config/route/v3"
-	v35 "github.com/cilium/proxy/go/envoy/config/trace/v3"
-	v34 "github.com/cilium/proxy/go/envoy/type/tracing/v3"
-	v33 "github.com/cilium/proxy/go/envoy/type/v3"
+	v36 "github.com/cilium/proxy/go/envoy/config/trace/v3"
+	v35 "github.com/cilium/proxy/go/envoy/type/tracing/v3"
+	v34 "github.com/cilium/proxy/go/envoy/type/v3"
 	_ "github.com/cncf/udpa/go/udpa/annotations"
+	v33 "github.com/cncf/udpa/go/xds/core/v3"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	proto "github.com/golang/protobuf/proto"
 	any "github.com/golang/protobuf/ptypes/any"
@@ -25,8 +26,6 @@ import (
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
-	_ "udpa/annotations"
-	v1 "udpa/core/v1"
 )
 
 const (
@@ -1035,7 +1034,7 @@ type Rds struct {
 	RouteConfigName string `protobuf:"bytes,2,opt,name=route_config_name,json=routeConfigName,proto3" json:"route_config_name,omitempty"`
 	// Resource locator for RDS. This is mutually exclusive to *route_config_name*.
 	// [#not-implemented-hide:]
-	RdsResourceLocator *v1.ResourceLocator `protobuf:"bytes,3,opt,name=rds_resource_locator,json=rdsResourceLocator,proto3" json:"rds_resource_locator,omitempty"`
+	RdsResourceLocator *v33.ResourceLocator `protobuf:"bytes,3,opt,name=rds_resource_locator,json=rdsResourceLocator,proto3" json:"rds_resource_locator,omitempty"`
 }
 
 func (x *Rds) Reset() {
@@ -1084,7 +1083,7 @@ func (x *Rds) GetRouteConfigName() string {
 	return ""
 }
 
-func (x *Rds) GetRdsResourceLocator() *v1.ResourceLocator {
+func (x *Rds) GetRdsResourceLocator() *v33.ResourceLocator {
 	if x != nil {
 		return x.RdsResourceLocator
 	}
@@ -1463,13 +1462,13 @@ type HttpConnectionManager_Tracing struct {
 	// 'tracing.client_sampling' in the :ref:`HTTP Connection Manager
 	// <config_http_conn_man_runtime>`.
 	// Default: 100%
-	ClientSampling *v33.Percent `protobuf:"bytes,3,opt,name=client_sampling,json=clientSampling,proto3" json:"client_sampling,omitempty"`
+	ClientSampling *v34.Percent `protobuf:"bytes,3,opt,name=client_sampling,json=clientSampling,proto3" json:"client_sampling,omitempty"`
 	// Target percentage of requests managed by this HTTP connection manager that will be randomly
 	// selected for trace generation, if not requested by the client or not forced. This field is
 	// a direct analog for the runtime variable 'tracing.random_sampling' in the
 	// :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
 	// Default: 100%
-	RandomSampling *v33.Percent `protobuf:"bytes,4,opt,name=random_sampling,json=randomSampling,proto3" json:"random_sampling,omitempty"`
+	RandomSampling *v34.Percent `protobuf:"bytes,4,opt,name=random_sampling,json=randomSampling,proto3" json:"random_sampling,omitempty"`
 	// Target percentage of requests managed by this HTTP connection manager that will be traced
 	// after all other sampling checks have been applied (client-directed, force tracing, random
 	// sampling). This field functions as an upper limit on the total configured sampling rate. For
@@ -1478,7 +1477,7 @@ type HttpConnectionManager_Tracing struct {
 	// analog for the runtime variable 'tracing.global_enabled' in the
 	// :ref:`HTTP Connection Manager <config_http_conn_man_runtime>`.
 	// Default: 100%
-	OverallSampling *v33.Percent `protobuf:"bytes,5,opt,name=overall_sampling,json=overallSampling,proto3" json:"overall_sampling,omitempty"`
+	OverallSampling *v34.Percent `protobuf:"bytes,5,opt,name=overall_sampling,json=overallSampling,proto3" json:"overall_sampling,omitempty"`
 	// Whether to annotate spans with additional data. If true, spans will include logs for stream
 	// events.
 	Verbose bool `protobuf:"varint,6,opt,name=verbose,proto3" json:"verbose,omitempty"`
@@ -1487,7 +1486,7 @@ type HttpConnectionManager_Tracing struct {
 	// Default: 256
 	MaxPathTagLength *wrappers.UInt32Value `protobuf:"bytes,7,opt,name=max_path_tag_length,json=maxPathTagLength,proto3" json:"max_path_tag_length,omitempty"`
 	// A list of custom tags with unique tag name to create tags for the active span.
-	CustomTags []*v34.CustomTag `protobuf:"bytes,8,rep,name=custom_tags,json=customTags,proto3" json:"custom_tags,omitempty"`
+	CustomTags []*v35.CustomTag `protobuf:"bytes,8,rep,name=custom_tags,json=customTags,proto3" json:"custom_tags,omitempty"`
 	// Configuration for an external tracing provider.
 	// If not specified, no tracing will be performed.
 	//
@@ -1498,7 +1497,7 @@ type HttpConnectionManager_Tracing struct {
 	//   will be rejected.
 	//   Such a constraint is inherent to OpenCensus itself. It cannot be overcome without changes
 	//   on OpenCensus side.
-	Provider *v35.Tracing_Http `protobuf:"bytes,9,opt,name=provider,proto3" json:"provider,omitempty"`
+	Provider *v36.Tracing_Http `protobuf:"bytes,9,opt,name=provider,proto3" json:"provider,omitempty"`
 }
 
 func (x *HttpConnectionManager_Tracing) Reset() {
@@ -1533,21 +1532,21 @@ func (*HttpConnectionManager_Tracing) Descriptor() ([]byte, []int) {
 	return file_envoy_extensions_filters_network_http_connection_manager_v3_http_connection_manager_proto_rawDescGZIP(), []int{0, 0}
 }
 
-func (x *HttpConnectionManager_Tracing) GetClientSampling() *v33.Percent {
+func (x *HttpConnectionManager_Tracing) GetClientSampling() *v34.Percent {
 	if x != nil {
 		return x.ClientSampling
 	}
 	return nil
 }
 
-func (x *HttpConnectionManager_Tracing) GetRandomSampling() *v33.Percent {
+func (x *HttpConnectionManager_Tracing) GetRandomSampling() *v34.Percent {
 	if x != nil {
 		return x.RandomSampling
 	}
 	return nil
 }
 
-func (x *HttpConnectionManager_Tracing) GetOverallSampling() *v33.Percent {
+func (x *HttpConnectionManager_Tracing) GetOverallSampling() *v34.Percent {
 	if x != nil {
 		return x.OverallSampling
 	}
@@ -1568,14 +1567,14 @@ func (x *HttpConnectionManager_Tracing) GetMaxPathTagLength() *wrappers.UInt32Va
 	return nil
 }
 
-func (x *HttpConnectionManager_Tracing) GetCustomTags() []*v34.CustomTag {
+func (x *HttpConnectionManager_Tracing) GetCustomTags() []*v35.CustomTag {
 	if x != nil {
 		return x.CustomTags
 	}
 	return nil
 }
 
-func (x *HttpConnectionManager_Tracing) GetProvider() *v35.Tracing_Http {
+func (x *HttpConnectionManager_Tracing) GetProvider() *v36.Tracing_Http {
 	if x != nil {
 		return x.Provider
 	}
@@ -2893,12 +2892,12 @@ var file_envoy_extensions_filters_network_http_connection_manager_v3_http_connec
 	(*v31.AccessLogFilter)(nil),                                                         // 31: envoy.config.accesslog.v3.AccessLogFilter
 	(*v3.DataSource)(nil),                                                               // 32: envoy.config.core.v3.DataSource
 	(*v3.ConfigSource)(nil),                                                             // 33: envoy.config.core.v3.ConfigSource
-	(*v1.ResourceLocator)(nil),                                                          // 34: udpa.core.v1.ResourceLocator
+	(*v33.ResourceLocator)(nil),                                                         // 34: udpa.core.v1.ResourceLocator
 	(*v32.ScopedRouteConfiguration)(nil),                                                // 35: envoy.config.route.v3.ScopedRouteConfiguration
 	(*any.Any)(nil),                                                                     // 36: google.protobuf.Any
-	(*v33.Percent)(nil),                                                                 // 37: envoy.type.v3.Percent
-	(*v34.CustomTag)(nil),                                                               // 38: envoy.type.tracing.v3.CustomTag
-	(*v35.Tracing_Http)(nil),                                                            // 39: envoy.config.trace.v3.Tracing.Http
+	(*v34.Percent)(nil),                                                                 // 37: envoy.type.v3.Percent
+	(*v35.CustomTag)(nil),                                                               // 38: envoy.type.tracing.v3.CustomTag
+	(*v36.Tracing_Http)(nil),                                                            // 39: envoy.config.trace.v3.Tracing.Http
 }
 var file_envoy_extensions_filters_network_http_connection_manager_v3_http_connection_manager_proto_depIdxs = []int32{
 	0,  // 0: envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager.codec_type:type_name -> envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager.CodecType
