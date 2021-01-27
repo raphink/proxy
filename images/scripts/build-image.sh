@@ -98,6 +98,8 @@ run_buildx() {
     "--platform=${platform}"
     "--builder=${builder}"
     "--file=${image_dir}/Dockerfile"
+    "--cache-from=type=local,src=/tmp/local-cache"
+    "--cache-to=type=local,dest=/tmp/local-cache"
   )
   if [ "${with_root_context}" = "false" ] ; then
     build_args+=("${image_dir}")
