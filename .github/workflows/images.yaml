@@ -6,7 +6,7 @@ on:
     branches:
       - master
       - v[0-9]+.[0-9]+
-      - multi-platform-image
+      - multi-platform-image-4
     tags:
       - v[0-9]+.[0-9]+.[0-9]+
       - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+
@@ -246,16 +246,38 @@ jobs:
           entrypoint: make
           args: -C images lint
       - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
-        name: Run make cilium-envoy-image
+        name: Run make cilium-envoy-image - 1st attempt
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
           QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-          PRUNE_DISK_CACHE: "true"
         with:
           entrypoint: make
           args: -C images cilium-envoy-image PUSH=true
+        continue-on-error: true
+      - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
+        name: Run make cilium-envoy-image - 2nd attempt
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+        with:
+          entrypoint: make
+          args: -C images cilium-envoy-image PUSH=true
+        continue-on-error: true
+      - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
+        name: Run make cilium-envoy-image - 3rd attempt
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
+          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+        with:
+          entrypoint: make
+          args: -C images cilium-envoy-image PUSH=true
+        continue-on-error: true
       - name: Post-mortem
         if: ${{ failure() }}
         run: |
