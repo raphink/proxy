@@ -124,7 +124,11 @@ run_buildx() {
       exit 1
     fi
   fi
-  docker buildx build --output="${output}" "${tag_args[@]}" "${build_args[@]}"
+  docker buildx build \
+      --cache-from quay.io/cilium/cilium-envoy-dev:base-test \
+      --cache-to quay.io/cilium/cilium-envoy-dev:base-test \
+      --output="${output}" "${tag_args[@]}" "${build_args[@]}"
+  docker push "quay.io/cilium/${image_name}:${image_tag}"
 }
 
 if [ "${do_build}" = "true" ] ; then
