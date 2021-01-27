@@ -98,6 +98,8 @@ run_buildx() {
     "--platform=${platform}"
     "--builder=${builder}"
     "--file=${image_dir}/Dockerfile"
+    "--cache-from=docker.io/cilium/cilium-envoy-dev:master-cache"
+    "--cache-to=docker.io/cilium/cilium-envoy-dev:master-cache"
   )
   if [ "${with_root_context}" = "false" ] ; then
     build_args+=("${image_dir}")
