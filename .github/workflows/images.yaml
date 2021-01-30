@@ -6,7 +6,7 @@ on:
     branches:
       - master
       - v[0-9]+.[0-9]+
-      - multi-platform-image-3
+      - multi-platform-image-3-arch-first
     tags:
       - v[0-9]+.[0-9]+.[0-9]+
       - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+
@@ -30,6 +30,8 @@ jobs:
     runs-on: ubuntu-18.04
     needs: lint
     steps:
+      - name: restart docker
+        run: sudo systemctl restart docker.service
       - name: Reclaim disk space for Bazel
         run: |
           set -x
@@ -240,6 +242,8 @@ jobs:
         with:
           entrypoint: docker
           args: run --privileged linuxkit/binfmt:5d33e7346e79f9c13a73c6952669e47a53b063d4
+      - name: restart docker
+        run: sudo systemctl restart docker.service
       - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
         name: Run make lint
         with:
@@ -256,6 +260,8 @@ jobs:
           entrypoint: make
           args: -C images cilium-envoy-image PUSH=true
         continue-on-error: true
+      - name: restart docker
+        run: sudo systemctl restart docker.service
       - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
         name: Run make cilium-envoy-image - 2nd attempt
         env:
@@ -267,6 +273,8 @@ jobs:
           entrypoint: make
           args: -C images cilium-envoy-image PUSH=true
         continue-on-error: true
+      - name: restart docker
+        run: sudo systemctl restart docker.service
       - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
         name: Run make cilium-envoy-image - 3rd attempt
         env:
