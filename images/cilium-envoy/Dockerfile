@@ -11,13 +11,17 @@ FROM --platform=linux/amd64 ${COMPILERS_IMAGE} as builder
 ARG BAZEL_BUILD_EXTRA_OPTS
 ARG BAZEL_BUILD_OPTS="--jobs=auto --experimental_local_memory_estimate --verbose_failures ${BAZEL_BUILD_EXTRA_OPTS}"
 
-RUN make cilium-envoy install \
+WORKDIR /src
+
+RUN --mount=type=bind,readwrite,target=/src \
+  make cilium-envoy install \
   BAZEL_BUILD_OPTS="${BAZEL_BUILD_OPTS} --incompatible_enable_cc_toolchain_resolution --platforms=//bazel/platforms:aarch64_cross --define=cross=aarch64 --linkopt=\"-Wl,--reduce-memory-overheads\"" \
   STRIP=aarch64-linux-gnu-strip \
   PKG_BUILD=1 \
   DESTDIR=/out/linux/arm64
 
-RUN make cilium-envoy install \
+RUN --mount=type=bind,readwrite,target=/src \
+  make cilium-envoy install \
   BAZEL_BUILD_OPTS="${BAZEL_BUILD_OPTS}" \
   PKG_BUILD=1 \
   DESTDIR=/out/linux/amd64
