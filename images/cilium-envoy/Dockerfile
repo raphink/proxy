@@ -13,14 +13,11 @@ ARG BAZEL_BUILD_OPTS="--jobs=auto --experimental_local_memory_estimate --verbose
 
 WORKDIR /src
 
-RUN --mount=type=bind,readwrite,target=/src --mount=type=secret,id=gcp-service-account-key,target=/src/gcp-service-account-key.json --mount=type=cache,id=bazel-cache,target=/tmp/bazel-cache \
-  df -h ; du -h -d 1 /tmp/bazel-cache
+RUN --mount=type=bind,readwrite,target=/src --mount=type=secret,id=gcp-service-account-key,target=/src/gcp-service-account-key.json --mount=type=cache,id=bazel-cache,target=/tmp/bazel-cache/arm64 \
+  df -h ; du -h -d 1 /tmp/bazel-cache/arm64
 
 RUN --mount=type=bind,readwrite,target=/src --mount=type=secret,id=gcp-service-account-key,target=/src/gcp-service-account-key.json --mount=type=cache,id=bazel-cache,target=/tmp/bazel-cache/amd64 \
-  make cilium-envoy install \
-  BAZEL_BUILD_OPTS="${BAZEL_BUILD_OPTS} --disk_cache=/tmp/bazel-cache/amd64/cas --repository_cache=/tmp/bazel-cache/amd64/repository" \
-  PKG_BUILD=1 \
-  DESTDIR=/out/linux/amd64
+  df -h ; du -h -d 1 /tmp/bazel-cache/amd64
 
 RUN --mount=type=bind,readwrite,target=/src --mount=type=secret,id=gcp-service-account-key,target=/src/gcp-service-account-key.json --mount=type=cache,id=bazel-cache,target=/tmp/bazel-cache/arm64 \
   make cilium-envoy install \
@@ -28,6 +25,12 @@ RUN --mount=type=bind,readwrite,target=/src --mount=type=secret,id=gcp-service-a
   STRIP=aarch64-linux-gnu-strip \
   PKG_BUILD=1 \
   DESTDIR=/out/linux/arm64 || (df -h ; du -h /tmp/bazel-cache ; exit 1 )
+
+RUN --mount=type=bind,readwrite,target=/src --mount=type=secret,id=gcp-service-account-key,target=/src/gcp-service-account-key.json --mount=type=cache,id=bazel-cache,target=/tmp/bazel-cache/amd64 \
+  make cilium-envoy install \
+  BAZEL_BUILD_OPTS="${BAZEL_BUILD_OPTS} --disk_cache=/tmp/bazel-cache/amd64/cas --repository_cache=/tmp/bazel-cache/amd64/repository" \
+  PKG_BUILD=1 \
+  DESTDIR=/out/linux/amd64
 
 FROM scratch
 ARG TARGETPLATFORM
