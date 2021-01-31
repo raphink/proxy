@@ -242,6 +242,8 @@ jobs:
         with:
           entrypoint: docker
           args: run --privileged linuxkit/binfmt:5d33e7346e79f9c13a73c6952669e47a53b063d4
+      - name: create builder
+        run: DOCKER_BUILDX=1 docker buildx create --name cross --platform linux/arm64,linux/amd64 --use
       - name: build-images
         run: DOCKER_BUILDX=1 ARCH=multi make docker-image-envoy
         continue-on-error: true
