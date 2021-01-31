@@ -6,7 +6,7 @@ on:
     branches:
       - master
       - v[0-9]+.[0-9]+
-      - multi-platform-image-3-arch-first
+      - multi-platform-image-main-dockerfile-cilium-image-maker
     tags:
       - v[0-9]+.[0-9]+.[0-9]+
       - v[0-9]+.[0-9]+.[0-9]+-rc[0-9]+
@@ -242,49 +242,18 @@ jobs:
         with:
           entrypoint: docker
           args: run --privileged linuxkit/binfmt:5d33e7346e79f9c13a73c6952669e47a53b063d4
-      - name: restart docker
-        run: sudo systemctl restart docker.service
       - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
-        name: Run make lint
-        with:
-          entrypoint: make
-          args: -C images lint
-      - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
-        name: Run make cilium-envoy-image - 1st attempt
+        name: Run make docker-image-envoy
         env:
           DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
           QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
+          DOCKER_BUILDX: "1"
+          ARCH: multi
         with:
           entrypoint: make
-          args: -C images cilium-envoy-image PUSH=true
-        continue-on-error: true
-      - name: restart docker
-        run: sudo systemctl restart docker.service
-      - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
-        name: Run make cilium-envoy-image - 2nd attempt
-        env:
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
-          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-        with:
-          entrypoint: make
-          args: -C images cilium-envoy-image PUSH=true
-        continue-on-error: true
-      - name: restart docker
-        run: sudo systemctl restart docker.service
-      - uses: docker://docker.io/cilium/image-maker:bc81755ec8f6c5afcb10a416cef73f99a35fee2c
-        name: Run make cilium-envoy-image - 3rd attempt
-        env:
-          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
-          DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
-          QUAY_PASSWORD: ${{ secrets.QUAY_PASSWORD }}
-          QUAY_USERNAME: ${{ secrets.QUAY_USERNAME }}
-        with:
-          entrypoint: make
-          args: -C images cilium-envoy-image PUSH=true
+          args: docker-image-envoy
         continue-on-error: true
       - name: Post-mortem
         if: ${{ failure() }}
