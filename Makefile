@@ -33,7 +33,6 @@ BAZEL_OPTS ?=
 BAZEL_TEST_OPTS ?= --jobs=1 --test_timeout=2000
 BAZEL_CACHE ?= ~/.cache/bazel
 BAZEL_ARCHIVE ?= ~/bazel-cache.tar.bz2
-# COMPILER_DEP:=clang.bazelrc
 CLANG ?= clang
 CLANG_FORMAT ?= clang-format
 BUILDIFIER ?= buildifier
@@ -192,13 +191,13 @@ bazel-bin-fastbuild: force-non-root
 	-rm -f bazel-bin
 	ln -s $(shell bazel info bazel-bin) bazel-bin
 
-envoy-deps-fastbuild: bazel-bin-fastbuild $(COMPILER_DEP)
+envoy-deps-fastbuild: bazel-bin-fastbuild clang.bazelrc
 	@$(ECHO_BAZEL)
 	$(BAZEL) $(BAZEL_OPTS) build $(BAZEL_BUILD_OPTS) //:cilium-envoy-deps $(BAZEL_FILTER)
 	-rm -f bazel-bin/cilium-envoy-deps
 	$(BAZEL) shutdown
 
-envoy-default: bazel-bin-fastbuild $(COMPILER_DEP)
+envoy-default: bazel-bin-fastbuild clang.bazelrc
 	@$(ECHO_BAZEL)
 	-rm -f ${ENVOY_LINKSTAMP_O}
 	$(BAZEL) $(BAZEL_OPTS) build $(BAZEL_BUILD_OPTS) //:cilium-envoy $(BAZEL_FILTER)
@@ -208,13 +207,13 @@ bazel-bin-opt: force
 	-rm -f bazel-bin
 	ln -s $(shell bazel info -c opt bazel-bin) bazel-bin
 
-envoy-deps-opt: bazel-bin-opt $(COMPILER_DEP)
+envoy-deps-opt: bazel-bin-opt clang.bazelrc
 	@$(ECHO_BAZEL)
 	$(BAZEL) $(BAZEL_OPTS) build $(BAZEL_BUILD_OPTS) -c opt //:cilium-envoy-deps $(BAZEL_FILTER)
 	-rm -f bazel-bin/cilium-envoy-deps
 	$(BAZEL) shutdown
 
-$(CILIUM_ENVOY_BIN): bazel-bin-opt $(COMPILER_DEP)
+$(CILIUM_ENVOY_BIN): bazel-bin-opt clang.bazelrc
 	@$(ECHO_BAZEL)
 	-rm -f ${ENVOY_LINKSTAMP_O}
 	$(BAZEL) $(BAZEL_OPTS) build $(BAZEL_BUILD_OPTS) -c opt //:cilium-envoy $(BAZEL_FILTER)
