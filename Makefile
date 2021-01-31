@@ -118,7 +118,7 @@ docker-image-builder-refresh: Dockerfile.builder-refresh clean
 .PHONY: docker-image-envoy
 docker-image-envoy: Dockerfile clean
 	@$(ECHO_GEN) docker-image-envoy
-	$(DOCKER) build $(DOCKER_BUILD_OPTS) --build-arg BAZEL_BUILD_OPTS="$(BAZEL_BUILD_OPTS)" -t "$(DOCKER_DEV_ACCOUNT)/cilium-envoy:$(DOCKER_ARCH_TAG)" .
+	$(DOCKER) build $(DOCKER_BUILD_OPTS) --build-arg BAZEL_BUILD_OPTS="$(BAZEL_BUILD_OPTS)" -t "$(DOCKER_DEV_ACCOUNT)/cilium-envoy-dev:$(DOCKER_ARCH_TAG)" .
 ifndef DOCKER_BUILDX
 	$(QUIET)echo "Push like this when ready:"
 	$(QUIET)echo "docker push $(DOCKER_DEV_ACCOUNT)/cilium-envoy:$(DOCKER_ARCH_TAG)"
