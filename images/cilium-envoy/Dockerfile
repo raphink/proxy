@@ -13,6 +13,9 @@ ARG BAZEL_BUILD_OPTS="--jobs=auto --experimental_local_memory_estimate --verbose
 
 WORKDIR /src
 
+RUN apt-get update
+RUN apt-get install -y clang-10 llvm-10-dev clang-format-10 lld-10
+
 RUN --mount=type=bind,readwrite,target=/src \
   make cilium-envoy install \
   BAZEL_BUILD_OPTS="${BAZEL_BUILD_OPTS} --incompatible_enable_cc_toolchain_resolution --platforms=//bazel/platforms:aarch64_cross --define=cross=aarch64 --linkopt=\"-Wl,--reduce-memory-overheads\"" \
