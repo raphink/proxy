@@ -98,8 +98,8 @@ run_buildx() {
     "--platform=${platform}"
     "--builder=${builder}"
     "--file=${image_dir}/Dockerfile"
-    "--cache-from=type=local,src=/tmp/local-cache"
-    "--cache-to=type=local,dest=/tmp/local-cache"
+    "--cache-from=docker.io/cilium/cilium-envoy-dev:master-cache"
+    "--cache-from=local,src=/tmp/local-cache"
   )
   if [ "${with_root_context}" = "false" ] ; then
     build_args+=("${image_dir}")
@@ -126,7 +126,11 @@ run_buildx() {
       exit 1
     fi
   fi
+  build_args_to_remote=build_args
+  build_args+=("--cache-to=type=local,dest=/tmp/local-cache")
+  build_args_to_remote+=("--cache-to=docker.io/cilium/cilium-envoy-dev:master-cache")
   docker buildx build --output="${output}" "${tag_args[@]}" "${build_args[@]}"
+  docker buildx build --output="${output}" "${tag_args[@]}" "${build_args_to_remote[@]}"
 }
 
 if [ "${do_build}" = "true" ] ; then
